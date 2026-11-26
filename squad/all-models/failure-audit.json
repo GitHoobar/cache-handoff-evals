@@ -1,0 +1,887 @@
+{
+  "adjudicated_questions": {
+    "56bec2573aeaaa14008c937b": {
+      "golds": [
+        "The Late Show with Stephen Colbert",
+        "The Late Show with Stephen Colbert",
+        "Late Show with Stephen Colbert"
+      ],
+      "losses": {
+        "The Late Late Show with James Corden.": {
+          "directions": [
+            [
+              "llama31-8b",
+              "gemma3-12b"
+            ],
+            [
+              "ministral3-14b",
+              "gemma3-12b"
+            ],
+            [
+              "qwen35-9b",
+              "gemma3-12b"
+            ]
+          ],
+          "label": "wrong entity"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "The Late Show with Stephen Colbert",
+        "gemma4-12b": "The Late Show with Stephen Colbert",
+        "llama31-8b": "The Late Show with Stephen Colbert.",
+        "ministral3-14b": "*The Late Show with Stephen Colbert*",
+        "ministral3-8b": "*The Late Show with Stephen Colbert*",
+        "qwen3-14b": "The Late Show with Stephen Colbert.",
+        "qwen35-9b": "The Late Show with Stephen Colbert"
+      },
+      "passage": "As opposed to broadcasts of primetime series, CBS broadcast special episodes of its late night talk shows as its lead-out programs for Super Bowl 50, beginning with a special episode of The Late Show with Stephen Colbert following the game. Following a break for late local programming, CBS also aired a special episode of The Late Late Show with James Corden.",
+      "question": "What talk show followed immediately after Super Bowl 50 on CBS?"
+    },
+    "56dde1d966d3e219004dad8d": {
+      "golds": [
+        "Rollo",
+        "Rollo",
+        "Rollo"
+      ],
+      "losses": {
+        "Rollo's contingents": {
+          "directions": [
+            [
+              "ministral3-14b",
+              "gemma4-12b"
+            ],
+            [
+              "ministral3-8b",
+              "gemma4-12b"
+            ]
+          ],
+          "label": "uncertain"
+        },
+        "Rollo's contingents.": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "gemma3-12b"
+            ],
+            [
+              "llama31-8b",
+              "gemma3-12b"
+            ],
+            [
+              "ministral3-14b",
+              "gemma3-12b"
+            ],
+            [
+              "ministral3-8b",
+              "gemma3-12b"
+            ],
+            [
+              "qwen3-14b",
+              "gemma3-12b"
+            ],
+            [
+              "qwen35-9b",
+              "gemma3-12b"
+            ]
+          ],
+          "label": "uncertain"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Rollo.",
+        "gemma4-12b": "Rollo",
+        "llama31-8b": "Rollo.",
+        "ministral3-14b": "Rollo",
+        "ministral3-8b": "Rollo.",
+        "qwen3-14b": "Rollo.",
+        "qwen35-9b": "Rollo"
+      },
+      "passage": "Before Rollo's arrival, its populations did not differ from Picardy or the Île-de-France, which were considered \"Frankish\". Earlier Viking settlers had begun arriving in the 880s, but were divided between colonies in the east (Roumois and Pays de Caux) around the low Seine valley and in the west in the Cotentin Peninsula, and were separated by traditional pagii, where the population remained about the same with almost no foreign settlers. Rollo's contingents who raided and ultimately settled Normandy and parts of the Atlantic coast included Danes, Norwegians, Norse–Gaels, Orkney Vikings, possibly Swedes, and Anglo-Danes from the English Danelaw under Norse control.",
+      "question": "Who upon arriving gave the original viking settlers a common identity?"
+    },
+    "56de48f34396321400ee2771": {
+      "golds": [
+        "Knights Templar",
+        "the Knights Templar",
+        "the Knights Templar"
+      ],
+      "losses": {
+        "Guy de Lusignan": {
+          "directions": [
+            [
+              "ministral3-14b",
+              "gemma3-12b"
+            ]
+          ],
+          "label": "wrong entity"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "The Knights Templar.",
+        "gemma4-12b": "The Knights Templar",
+        "llama31-8b": "The Knights Templar.",
+        "ministral3-14b": "Knights Templar",
+        "ministral3-8b": "The Knights Templar.",
+        "qwen3-14b": "The Knights Templar.",
+        "qwen35-9b": "Knights Templar"
+      },
+      "passage": "The rapid Anglo-Norman conquest proved more important than it seemed. The island occupied a key strategic position on the maritime lanes to the Holy Land, whose occupation by the Christians could not continue without support from the sea. Shortly after the conquest, Cyprus was sold to the Knights Templar and it was subsequently acquired, in 1192, by Guy de Lusignan and became a stable feudal kingdom. It was only in 1489 that the Venetians acquired full control of the island, which remained a Christian stronghold until the fall of Famagusta in 1571.",
+      "question": "What group bought Cyprus after the Norman conquest?"
+    },
+    "57107a3ea58dae1900cd69e1": {
+      "golds": [
+        "the British Landgrave Edmund Bellinger",
+        "Edmund Bellinger",
+        "Edmund Bellinger"
+      ],
+      "losses": {
+        "From the British Landgrave Edmund Bellinger.": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "qwen35-9b"
+            ],
+            [
+              "llama31-8b",
+              "qwen35-9b"
+            ],
+            [
+              "ministral3-14b",
+              "qwen35-9b"
+            ],
+            [
+              "ministral3-8b",
+              "qwen35-9b"
+            ],
+            [
+              "qwen3-14b",
+              "qwen35-9b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "They purchased land from the British Landgrave Edmund Bellinger.": {
+          "directions": [
+            [
+              "ministral3-14b",
+              "gemma3-12b"
+            ],
+            [
+              "ministral3-8b",
+              "gemma3-12b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "The British Landgrave Edmund Bellinger.",
+        "gemma4-12b": "the British Landgrave Edmund Bellinger",
+        "llama31-8b": "The British Landgrave Edmund Bellinger.",
+        "ministral3-14b": "Edmund Bellinger",
+        "ministral3-8b": "The British Landgrave Edmund Bellinger.",
+        "qwen3-14b": "the British Landgrave Edmund Bellinger.",
+        "qwen35-9b": "The British Landgrave Edmund Bellinger."
+      },
+      "passage": "In the early years, many Huguenots also settled in the area of present-day Charleston, South Carolina. In 1685, Rev. Elie Prioleau from the town of Pons in France, was among the first to settle there. He became pastor of the first Huguenot church in North America in that city. After the Revocation of the Edict of Nantes in 1685, several Huguenot families of Norman and Carolingian nobility and descent, including Edmund Bohun of Suffolk England from the Humphrey de Bohun line of French royalty descended from Charlemagne, Jean Postell of Dieppe France, Alexander Pepin, Antoine Poitevin of Orsement France, and Jacques de Bordeaux of Grenoble, immigrated to the Charleston Orange district. They were very successful at marriage and property speculation. After petitioning the British Crown in 1697 for the right to own land in the Baronies, they prospered as slave owners on the Cooper, Ashepoo, Ashley and Santee River plantations they purchased from the British Landgrave Edmund Bellinger. Some of their descendants moved into the Deep South and Texas, where they developed new plantations.",
+      "question": "From whom did the Huguenots in South Carolina purchase land from?"
+    },
+    "5711619950c2381900b54aaf": {
+      "golds": [
+        "1775",
+        "1763–1775",
+        "1775",
+        "1775"
+      ],
+      "losses": {
+        "1763-1775": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "llama31-8b"
+            ],
+            [
+              "qwen3-14b",
+              "llama31-8b"
+            ],
+            [
+              "qwen35-9b",
+              "llama31-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "1775",
+        "gemma4-12b": "1775",
+        "llama31-8b": "1763–1775",
+        "ministral3-14b": "1775",
+        "ministral3-8b": "1775",
+        "qwen3-14b": "1775",
+        "qwen35-9b": "1763–1775"
+      },
+      "passage": "The next major step occurred when James Watt developed (1763–1775) an improved version of Newcomen's engine, with a separate condenser. Boulton and Watt's early engines used half as much coal as John Smeaton's improved version of Newcomen's. Newcomen's and Watt's early engines were \"atmospheric\". They were powered by air pressure pushing a piston into the partial vacuum generated by condensing steam, instead of the pressure of expanding steam. The engine cylinders had to be large because the only usable force acting on them was due to atmospheric pressure.",
+      "question": "When did Watt finish the development of his improvements to Newcomen's engine?"
+    },
+    "5725c7f5271a42140099d1a1": {
+      "golds": [
+        "Wiesner",
+        "Wiesner",
+        "Wiesner",
+        "Wiesner",
+        "Wiesner"
+      ],
+      "losses": {
+        "Wiesner kept up the pressure and showed disagreements for the LOR, even in front of the President.": {
+          "directions": [
+            [
+              "llama31-8b",
+              "qwen3-14b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "Wiesner kept up the pressure, even making the disagreement public during a two-day September visit by the President to Marshall": {
+          "directions": [
+            [
+              "gemma3-12b",
+              "qwen3-14b"
+            ],
+            [
+              "gemma4-12b",
+              "qwen3-14b"
+            ],
+            [
+              "ministral3-14b",
+              "qwen3-14b"
+            ],
+            [
+              "ministral3-8b",
+              "qwen3-14b"
+            ],
+            [
+              "qwen35-9b",
+              "qwen3-14b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Wiesner.",
+        "gemma4-12b": "Wiesner",
+        "llama31-8b": "Wiesner.",
+        "ministral3-14b": "Wiesner",
+        "ministral3-8b": "Wiesner.",
+        "qwen3-14b": "Wiesner.",
+        "qwen35-9b": "Wiesner"
+      },
+      "passage": "Wiesner kept up the pressure, even making the disagreement public during a two-day September visit by the President to Marshall Space Flight Center. Wiesner blurted out \"No, that's no good\" in front of the press, during a presentation by von Braun. Webb jumped in and defended von Braun, until Kennedy ended the squabble by stating that the matter was \"still subject to final review\". Webb held firm, and issued a request for proposal to candidate Lunar Excursion Module (LEM) contractors. Wiesner finally relented, unwilling to settle the dispute once and for all in Kennedy's office, because of the President's involvement with the October Cuban missile crisis, and fear of Kennedy's support for Webb. NASA announced the selection of Grumman as the LEM contractor in November 1962.",
+      "question": "Who was keeping pressure and showing disagreements for the LOR, even in front of the President?"
+    },
+    "572649d8f1498d1400e8db36": {
+      "golds": [
+        "UK",
+        "UK",
+        "UK",
+        "the UK",
+        "UK"
+      ],
+      "losses": {
+        "Norway": {
+          "directions": [
+            [
+              "gemma3-12b",
+              "ministral3-14b"
+            ],
+            [
+              "gemma4-12b",
+              "ministral3-14b"
+            ],
+            [
+              "llama31-8b",
+              "ministral3-14b"
+            ],
+            [
+              "qwen3-14b",
+              "ministral3-14b"
+            ],
+            [
+              "qwen35-9b",
+              "ministral3-14b"
+            ]
+          ],
+          "label": "wrong entity"
+        },
+        "Sweden.": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "llama31-8b"
+            ],
+            [
+              "gemma4-12b",
+              "qwen3-14b"
+            ]
+          ],
+          "label": "wrong entity"
+        },
+        "Switzerland": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "gemma3-12b"
+            ],
+            [
+              "gemma4-12b",
+              "ministral3-8b"
+            ],
+            [
+              "ministral3-14b",
+              "ministral3-8b"
+            ],
+            [
+              "ministral3-8b",
+              "ministral3-14b"
+            ],
+            [
+              "qwen3-14b",
+              "ministral3-8b"
+            ]
+          ],
+          "label": "wrong entity"
+        },
+        "The UK is not badly hit by the embargo.": {
+          "directions": [
+            [
+              "ministral3-8b",
+              "llama31-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "United Kingdom": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "qwen35-9b"
+            ],
+            [
+              "qwen3-14b",
+              "qwen35-9b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "The UK",
+        "gemma4-12b": "the UK",
+        "llama31-8b": "The UK.",
+        "ministral3-14b": "The UK",
+        "ministral3-8b": "UK",
+        "qwen3-14b": "The UK.",
+        "qwen35-9b": "UK"
+      },
+      "passage": "Despite being relatively unaffected by the embargo, the UK nonetheless faced an oil crisis of its own - a series of strikes by coal miners and railroad workers over the winter of 1973–74 became a major factor in the change of government. Heath asked the British to heat only one room in their houses over the winter. The UK, Germany, Italy, Switzerland and Norway banned flying, driving and boating on Sundays. Sweden rationed gasoline and heating oil. The Netherlands imposed prison sentences for those who used more than their ration of electricity.",
+      "question": "Which country is not badly hit by the embargo?"
+    },
+    "572683f95951b619008f7525": {
+      "golds": [
+        "Persia",
+        "Persia",
+        "Persia after the Muslim conquests had come to an end"
+      ],
+      "losses": {
+        "Persia after the Muslim conquests.": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "llama31-8b"
+            ],
+            [
+              "ministral3-14b",
+              "llama31-8b"
+            ],
+            [
+              "qwen35-9b",
+              "llama31-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Persia",
+        "gemma4-12b": "Persia",
+        "llama31-8b": "Persia.",
+        "ministral3-14b": "Persia",
+        "ministral3-8b": "Persia.",
+        "qwen3-14b": "Persia",
+        "qwen35-9b": "Persia"
+      },
+      "passage": "Some modern scholars, such as Fielding H. Garrison, are of the opinion that the origin of the science of geology can be traced to Persia after the Muslim conquests had come to an end. Abu al-Rayhan al-Biruni (973–1048 CE) was one of the earliest Persian geologists, whose works included the earliest writings on the geology of India, hypothesizing that the Indian subcontinent was once a sea. Drawing from Greek and Indian scientific literature that were not destroyed by the Muslim conquests, the Persian scholar Ibn Sina (Avicenna, 981–1037) proposed detailed explanations for the formation of mountains, the origin of earthquakes, and other topics central to modern geology, which provided an essential foundation for the later development of the science. In China, the polymath Shen Kuo (1031–1095) formulated a hypothesis for the process of land formation: based on his observation of fossil animal shells in a geological stratum in a mountain hundreds of miles from the ocean, he inferred that the land was formed by erosion of the mountains and by deposition of silt.",
+      "question": "Fielding H. Garrison believes that the science of geology can be traced to where?"
+    },
+    "572691d7708984140094ca6e": {
+      "golds": [
+        "Gryphon",
+        "Gryphon",
+        "Gryphon"
+      ],
+      "losses": {
+        "British progressive folk-rock band Gryphon": {
+          "directions": [
+            [
+              "ministral3-8b",
+              "qwen35-9b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Gryphon",
+        "gemma4-12b": "Gryphon",
+        "llama31-8b": "Gryphon.",
+        "ministral3-14b": "Gryphon",
+        "ministral3-8b": "Gryphon",
+        "qwen3-14b": "Gryphon.",
+        "qwen35-9b": "Gryphon"
+      },
+      "passage": "In July 1973, as part of its outreach programme to young people, the V&A became the first museum in Britain to present a rock concert. The V&A presented a combined concert/lecture by British progressive folk-rock band Gryphon, who explored the lineage of mediaeval music and instrumentation and related how those contributed to contemporary music 500 years later. This innovative approach to bringing young people to museums was a hallmark of the directorship of Roy Strong and was subsequently emulated by some other British museums.",
+      "question": "Which musical group did the V&A present in July 1973 as part of its youth outreach programme?"
+    },
+    "57285ed5ff5b5019007da1b8": {
+      "golds": [
+        "Kublai Khan",
+        "Kublai Khan",
+        "Kublai Khan"
+      ],
+      "losses": {
+        "Kubai Khan.": {
+          "directions": [
+            [
+              "qwen35-9b",
+              "llama31-8b"
+            ]
+          ],
+          "label": "uncertain"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Kublai Khan.",
+        "gemma4-12b": "Kublai Khan",
+        "llama31-8b": "Kublai Khan.",
+        "ministral3-14b": "Kublai Khan",
+        "ministral3-8b": "Kublai Khan.",
+        "qwen3-14b": "Kublai Khan.",
+        "qwen35-9b": "Kublai Khan"
+      },
+      "passage": "The Yuan dynasty (Chinese: 元朝; pinyin: Yuán Cháo), officially the Great Yuan (Chinese: 大元; pinyin: Dà Yuán; Mongolian: Yehe Yuan Ulus[a]), was the empire or ruling dynasty of China established by Kublai Khan, leader of the Mongolian Borjigin clan. Although the Mongols had ruled territories including today's North China for decades, it was not until 1271 that Kublai Khan officially proclaimed the dynasty in the traditional Chinese style. His realm was, by this point, isolated from the other khanates and controlled most of present-day China and its surrounding areas, including modern Mongolia and Korea. It was the first foreign dynasty to rule all of China and lasted until 1368, after which its Genghisid rulers returned to their Mongolian homeland and continued to rule the Northern Yuan dynasty. Some of the Mongolian Emperors of the Yuan mastered the Chinese language, while others only used their native language (i.e. Mongolian) and the 'Phags-pa script.",
+      "question": "Who started the Yuan dynasty?"
+    },
+    "5728804b4b864d1900164a49": {
+      "golds": [
+        "polynomial algebra",
+        "polynomial algebra",
+        "polynomial algebra"
+      ],
+      "losses": {
+        "**Mathematics** (specifically, **simultaneous equations** and **matrices**).": {
+          "directions": [
+            [
+              "gemma4-12b",
+              "ministral3-8b"
+            ]
+          ],
+          "label": "uncertain"
+        },
+        "**Polynomial algebra** and **simultaneous equations** (using a rectangular array of coefficients, akin to modern": {
+          "directions": [
+            [
+              "qwen35-9b",
+              "ministral3-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "**Polynomial algebra** and **simultaneous equations** (using matrix-like methods).": {
+          "directions": [
+            [
+              "gemma3-12b",
+              "ministral3-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "**Polynomial algebra** and **simultaneous equations**.": {
+          "directions": [
+            [
+              "gemma3-12b",
+              "ministral3-14b"
+            ],
+            [
+              "llama31-8b",
+              "ministral3-14b"
+            ],
+            [
+              "ministral3-8b",
+              "ministral3-14b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "Advances in **polynomial algebra** were made during the Yuan era.": {
+          "directions": [
+            [
+              "ministral3-14b",
+              "ministral3-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "Advances in **polynomial algebra**.": {
+          "directions": [
+            [
+              "llama31-8b",
+              "ministral3-8b"
+            ],
+            [
+              "qwen3-14b",
+              "ministral3-8b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "Simultaneous equations": {
+          "directions": [
+            [
+              "qwen3-14b",
+              "qwen35-9b"
+            ]
+          ],
+          "label": "uncertain"
+        },
+        "Simultaneous equations and the summation of a finite arithmetic series.": {
+          "directions": [
+            [
+              "ministral3-8b",
+              "qwen35-9b"
+            ]
+          ],
+          "label": "uncertain"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Polynomial algebra.",
+        "gemma4-12b": "polynomial algebra",
+        "llama31-8b": "Polynomial algebra.",
+        "ministral3-14b": "Polynomial algebra.",
+        "ministral3-8b": "Polynomial algebra.",
+        "qwen3-14b": "Polynomial algebra.",
+        "qwen35-9b": "Polynomial algebra"
+      },
+      "passage": "Advances in polynomial algebra were made by mathematicians during the Yuan era. The mathematician Zhu Shijie (1249–1314) solved simultaneous equations with up to four unknowns using a rectangular array of coefficients, equivalent to modern matrices. Zhu used a method of elimination to reduce the simultaneous equations to a single equation with only one unknown. His method is described in the Jade Mirror of the Four Unknowns, written in 1303. The opening pages contain a diagram of Pascal's triangle. The summation of a finite arithmetic series is also covered in the book.",
+      "question": "What type of math was advanced during the Yuan?"
+    },
+    "57309446396df919000961b8": {
+      "golds": [
+        "around 1700",
+        "around 1700",
+        "1700",
+        "around 1700",
+        "1700"
+      ],
+      "losses": {
+        "The Age of Imperialism began around 1700.": {
+          "directions": [
+            [
+              "qwen3-14b",
+              "gemma4-12b"
+            ]
+          ],
+          "label": "requested fact present"
+        },
+        "The early 18th century.": {
+          "directions": [
+            [
+              "gemma3-12b",
+              "ministral3-14b"
+            ],
+            [
+              "gemma4-12b",
+              "ministral3-14b"
+            ],
+            [
+              "qwen3-14b",
+              "ministral3-14b"
+            ]
+          ],
+          "label": "requested fact present"
+        }
+      },
+      "native_answers": {
+        "gemma3-12b": "Around 1700.",
+        "gemma4-12b": "Around 1700.",
+        "llama31-8b": "Around 1700.",
+        "ministral3-14b": "Around 1700.",
+        "ministral3-8b": "Around 1700.",
+        "qwen3-14b": "Around 1700.",
+        "qwen35-9b": "around 1700"
+      },
+      "passage": "The Age of Imperialism, a time period beginning around 1700, saw (generally European) industrializing nations engaging in the process of colonizing, influencing, and annexing other parts of the world in order to gain political power.[citation needed] Although imperialist practices have existed for thousands of years, the term \"Age of Imperialism\" generally refers to the activities of European powers from the early 18th century through to the middle of the 20th century, for example, the \"The Great Game\" in Persian lands, the \"Scramble for Africa\" and the \"Open Door Policy\" in China.",
+      "question": "When did the age of Imperialism begin?"
+    }
+  },
+  "article_count": 48,
+  "clear_cases": [
+    {
+      "answer": "The Late Late Show with James Corden.",
+      "id": "56bec2573aeaaa14008c937b",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "llama31-8b",
+      "stopped": true,
+      "target": "gemma3-12b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "The Late Late Show with James Corden.",
+      "id": "56bec2573aeaaa14008c937b",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "ministral3-14b",
+      "stopped": true,
+      "target": "gemma3-12b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "The Late Late Show with James Corden.",
+      "id": "56bec2573aeaaa14008c937b",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "qwen35-9b",
+      "stopped": true,
+      "target": "gemma3-12b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Guy de Lusignan",
+      "id": "56de48f34396321400ee2771",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "ministral3-14b",
+      "stopped": true,
+      "target": "gemma3-12b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Norway",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "gemma3-12b",
+      "stopped": true,
+      "target": "ministral3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Switzerland",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": false
+      },
+      "source": "gemma4-12b",
+      "stopped": true,
+      "target": "gemma3-12b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Sweden.",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "gemma4-12b",
+      "stopped": true,
+      "target": "llama31-8b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Norway",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "gemma4-12b",
+      "stopped": true,
+      "target": "ministral3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Switzerland",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "gemma4-12b",
+      "stopped": true,
+      "target": "ministral3-8b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Sweden.",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "gemma4-12b",
+      "stopped": true,
+      "target": "qwen3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Norway",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "llama31-8b",
+      "stopped": true,
+      "target": "ministral3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Switzerland",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "ministral3-14b",
+      "stopped": true,
+      "target": "ministral3-8b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Switzerland",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "ministral3-8b",
+      "stopped": true,
+      "target": "ministral3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Norway",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "qwen3-14b",
+      "stopped": true,
+      "target": "ministral3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Switzerland",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "qwen3-14b",
+      "stopped": true,
+      "target": "ministral3-8b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    },
+    {
+      "answer": "Norway",
+      "id": "572649d8f1498d1400e8db36",
+      "identical_ids": {
+        "int4": true,
+        "int8": true,
+        "shared2": true
+      },
+      "source": "qwen35-9b",
+      "stopped": true,
+      "target": "ministral3-14b",
+      "verbatim_span_ignoring_case_and_final_period": true
+    }
+  ],
+  "directions_per_question": 42,
+  "exact_transitions": {
+    "native_0_translated_0": 938,
+    "native_0_translated_1": 136,
+    "native_1_translated_0": 141,
+    "native_1_translated_1": 1473
+  },
+  "question_count": 64,
+  "unanimous_exact_loss_labels": {
+    "requested fact present": 35,
+    "uncertain": 12,
+    "wrong entity": 16
+  },
+  "unanimous_native_exact_ids": [
+    "56bec2573aeaaa14008c937b",
+    "56dde1d966d3e219004dad8d",
+    "56de48f34396321400ee2771",
+    "56e1aba0e3433e1400423094",
+    "570960cf200fba1400367f03",
+    "57097d63ed30961900e841fe",
+    "57107a3ea58dae1900cd69e1",
+    "5711619950c2381900b54aaf",
+    "5725c7f5271a42140099d1a1",
+    "5725d183271a42140099d23d",
+    "572649d8f1498d1400e8db36",
+    "5726800add62a815002e8754",
+    "572683f95951b619008f7525",
+    "572685cd5951b619008f7576",
+    "572691d7708984140094ca6e",
+    "5727c69d3acd2414000dec14",
+    "572825a92ca10214002d9f01",
+    "57285ed5ff5b5019007da1b8",
+    "5728804b4b864d1900164a49",
+    "572fcc43b2c2fd140056847d",
+    "57309446396df919000961b8",
+    "57309d31396df91900096210"
+  ],
+  "unanimous_translated_cells": 924
+}

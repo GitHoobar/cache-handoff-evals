@@ -1,0 +1,3 @@
+# Does the chosen argument follow the code?
+
+This secondary diagnostic was specified while the GPU was downloading the checkpoints, before any coding predictions were available. Within each family the same request requires opposite symbols in the two variants. For each panel and model direction, count pairs where both edits pass, both are wrong, the same valid symbol is chosen despite the changed wiring, or either answer fails dispatch. If both calls choose the same valid symbol, exactly one of the two is right by construction. The native rows are repeated across senders. For sensitivity, also evaluate what a parser accepting one Markdown JSON fence around an otherwise strictly valid action would have done. The real tool uses the strict parser throughout.

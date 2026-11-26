@@ -1,0 +1,6 @@
+--- a/settings.py
++++ b/settings.py
+@@ -1,2 +1,2 @@
+-INLINE_WIDTH = 3
++INLINE_WIDTH = 4
+ BUFFER_WIDTH = 2

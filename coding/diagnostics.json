@@ -1,0 +1,108 @@
+{
+  "archived_then_current": {
+    "strict": {
+      "native": {
+        "decisions": {
+          "no_action": 96,
+          "pass": 16,
+          "wrong_edit": 32
+        },
+        "counterbalanced_pairs": {
+          "at_least_one_undispatched": 48,
+          "both_correct": 2,
+          "both_wrong": 10,
+          "same_symbol_despite_changed_wiring": 12
+        }
+      },
+      "bf16": {
+        "decisions": {
+          "no_action": 96,
+          "pass": 15,
+          "wrong_edit": 33
+        },
+        "counterbalanced_pairs": {
+          "at_least_one_undispatched": 48,
+          "both_wrong": 9,
+          "same_symbol_despite_changed_wiring": 15
+        }
+      }
+    },
+    "ignoring_one_json_fence": {
+      "native": {
+        "decisions": {
+          "pass": 42,
+          "wrong_edit": 102
+        },
+        "counterbalanced_pairs": {
+          "both_correct": 2,
+          "both_wrong": 32,
+          "same_symbol_despite_changed_wiring": 38
+        }
+      },
+      "bf16": {
+        "decisions": {
+          "pass": 40,
+          "wrong_edit": 104
+        },
+        "counterbalanced_pairs": {
+          "both_correct": 1,
+          "both_wrong": 33,
+          "same_symbol_despite_changed_wiring": 38
+        }
+      }
+    }
+  },
+  "current_only": {
+    "strict": {
+      "native": {
+        "decisions": {
+          "no_action": 96,
+          "pass": 42,
+          "wrong_edit": 6
+        },
+        "counterbalanced_pairs": {
+          "at_least_one_undispatched": 48,
+          "both_correct": 18,
+          "same_symbol_despite_changed_wiring": 6
+        }
+      },
+      "bf16": {
+        "decisions": {
+          "no_action": 96,
+          "pass": 34,
+          "wrong_edit": 14
+        },
+        "counterbalanced_pairs": {
+          "at_least_one_undispatched": 48,
+          "both_correct": 11,
+          "both_wrong": 1,
+          "same_symbol_despite_changed_wiring": 12
+        }
+      }
+    },
+    "ignoring_one_json_fence": {
+      "native": {
+        "decisions": {
+          "pass": 124,
+          "wrong_edit": 20
+        },
+        "counterbalanced_pairs": {
+          "both_correct": 54,
+          "both_wrong": 2,
+          "same_symbol_despite_changed_wiring": 16
+        }
+      },
+      "bf16": {
+        "decisions": {
+          "pass": 99,
+          "wrong_edit": 45
+        },
+        "counterbalanced_pairs": {
+          "both_correct": 29,
+          "both_wrong": 2,
+          "same_symbol_despite_changed_wiring": 41
+        }
+      }
+    }
+  }
+}

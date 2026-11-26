@@ -1,0 +1,105 @@
+{
+  "qwen3-14b": {
+    "repo": "Qwen/Qwen3-14B",
+    "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "official": "Qwen/Qwen3-14B",
+    "official_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "weight_git_objects": {
+      "model-00001-of-00008.safetensors": "bf075349c5631d4d123b5195773e80be845006f4",
+      "model-00002-of-00008.safetensors": "80454a641cc55f0c7a8aa99afaa8df7461b54136",
+      "model-00003-of-00008.safetensors": "b722023749ee7b6e1af203484157a25974de13aa",
+      "model-00004-of-00008.safetensors": "c1ba8959e0fe9ff5cf2e587c57f867a4b2098ceb",
+      "model-00005-of-00008.safetensors": "ff4ce681764b7859d25310530107736afcc8f191",
+      "model-00006-of-00008.safetensors": "34f3d88dbf75c08240a5eca7fb4b584fc25f0cae",
+      "model-00007-of-00008.safetensors": "40045b81cfaa9f875328b98e65e09ab22b3140a8",
+      "model-00008-of-00008.safetensors": "535e13b3d8e05d5fcf16f0388f696ef1ef5d099c"
+    },
+    "metadata_differences": []
+  },
+  "gemma3-12b": {
+    "repo": "unsloth/gemma-3-12b-it",
+    "revision": "9478e665381f42974aa06177b019352fb6291876",
+    "official": "google/gemma-3-12b-it",
+    "official_revision": "96b6f1eccf38110c56df3a15bffe176da04bfd80",
+    "weight_git_objects": {
+      "model-00001-of-00005.safetensors": "b31bb2df2dc13fd8028e51899bdb1e7a4fb6d167",
+      "model-00002-of-00005.safetensors": "5eb217601f2c82b83e3e7ae754d183429d9dde4e",
+      "model-00003-of-00005.safetensors": "425bcf00b3eb7c7ef42496d1500591e4f8068b72",
+      "model-00004-of-00005.safetensors": "71b7dba9bf563fdb2f5cc1a518483adfdc91d1a3",
+      "model-00005-of-00005.safetensors": "2e7be9e5bfa8222c2bfe34159586d2b1f35fd505"
+    },
+    "metadata_differences": [
+      "chat_template.jinja",
+      "config.json",
+      "generation_config.json",
+      "special_tokens_map.json",
+      "tokenizer_config.json"
+    ]
+  },
+  "ministral3-8b": {
+    "repo": "mistralai/Ministral-3-8B-Instruct-2512-BF16",
+    "revision": "f6fae9795746f63c9be8344932f01275f3c63734",
+    "official": "mistralai/Ministral-3-8B-Instruct-2512-BF16",
+    "official_revision": "f6fae9795746f63c9be8344932f01275f3c63734",
+    "weight_git_objects": {
+      "model-00001-of-00004.safetensors": "546e66387e3b29dd3aac9d90fd72ad88d37222f8",
+      "model-00002-of-00004.safetensors": "3fba2c6fe3ce5940158c6b920138b336e7892e71",
+      "model-00003-of-00004.safetensors": "e493a99e208b66184fcb9ac28e881496f395454a",
+      "model-00004-of-00004.safetensors": "fbbd7cdf7ca292bd7caa762d3699a0f2f8f9ddca"
+    },
+    "metadata_differences": []
+  },
+  "llama31-8b": {
+    "repo": "NousResearch/Meta-Llama-3.1-8B-Instruct",
+    "revision": "d10aef7999a2b5ba950ab3974312feeedbfe0b77",
+    "official": "meta-llama/Llama-3.1-8B-Instruct",
+    "official_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+    "weight_git_objects": {
+      "model-00001-of-00004.safetensors": "a59dca28867995c0d05384251ac5f4d62461a226",
+      "model-00002-of-00004.safetensors": "4ab0726caf5e75dd1e5700c7e7899ac8c0798428",
+      "model-00003-of-00004.safetensors": "5864b15557563e7700a3f95236afdee36f5fdb74",
+      "model-00004-of-00004.safetensors": "b8babcaa5a888d6efd5c05206361b4685492ad13"
+    },
+    "metadata_differences": [
+      "tokenizer_config.json"
+    ]
+  },
+  "gemma4-12b": {
+    "repo": "google/gemma-4-12B-it",
+    "revision": "43c9d014b231474fa7212dbb48a762566c2b255d",
+    "official": "google/gemma-4-12B-it",
+    "official_revision": "43c9d014b231474fa7212dbb48a762566c2b255d",
+    "weight_git_objects": {
+      "model.safetensors": "85441e32a8ab9f7cf6b2ed9b2f2a70e9b59dbb0b"
+    },
+    "metadata_differences": []
+  },
+  "qwen35-9b": {
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "official": "Qwen/Qwen3.5-9B",
+    "official_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "weight_git_objects": {
+      "model.safetensors-00001-of-00004.safetensors": "dfcd6f97b641f0447db5697eca1f4e227c84449c",
+      "model.safetensors-00002-of-00004.safetensors": "645b45d883adaee57a4dbbf75577fa634d20c6b5",
+      "model.safetensors-00003-of-00004.safetensors": "20f21fdc49bdca8f021badede1ec436d8241f1e2",
+      "model.safetensors-00004-of-00004.safetensors": "5a0f71d358bf91155d46e610dc32db45989a1a5f"
+    },
+    "metadata_differences": []
+  },
+  "ministral3-14b": {
+    "repo": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+    "revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "official": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+    "official_revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "weight_git_objects": {
+      "model-00001-of-00006.safetensors": "7f2050bf9c38d1e00c9b396a6b2c678c063fcd02",
+      "model-00002-of-00006.safetensors": "a60224b31d9174c7f13ba1bbd5a1415ebe7135a7",
+      "model-00003-of-00006.safetensors": "3ec12c7f283a21bee084e1fcfaaeabdf23514445",
+      "model-00004-of-00006.safetensors": "eb829119c75c195dfda1248d4b6029cd92aac910",
+      "model-00005-of-00006.safetensors": "9307e640c53c50d26e3e99dbc347208ff3d1167b",
+      "model-00006-of-00006.safetensors": "398d50978655713fb6c539f3bb97db7062446ab3"
+    },
+    "metadata_differences": []
+  }
+}

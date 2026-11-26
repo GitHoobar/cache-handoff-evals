@@ -1,0 +1,645 @@
+{
+  "archive_sha256": "1cfdc02fcb2cbabe6cba98496d2ab2ba60a12296f9b03d13744faa640b9170b2",
+  "item": "572649d8f1498d1400e8db36",
+  "question": "Which country is not badly hit by the embargo?",
+  "expected_record_id": "GB",
+  "scope": [
+    "A retrospective replay of one selected SQuAD item across seven frozen models.",
+    "Inputs are archived free-text QA generations from greedy native prefill and released BF16 translation.",
+    "The script converts each saved answer into one argument using a fixed four-country vocabulary and a full-answer parser. It rejects ambiguous or unsupported text.",
+    "Each parsed argument makes one local read against a fixed four-record dictionary. The gold is used only for validation and scoring.",
+    "No model generated a tool call. The replay runs offline without a model, router, external tool or writes to a service.",
+    "The 42 ordered handoffs share the same passage, question and model set. They do not estimate production error frequency or user impact."
+  ],
+  "registry": {
+    "GB": {
+      "id": "GB",
+      "country": "United Kingdom"
+    },
+    "NO": {
+      "id": "NO",
+      "country": "Norway"
+    },
+    "SE": {
+      "id": "SE",
+      "country": "Sweden"
+    },
+    "CH": {
+      "id": "CH",
+      "country": "Switzerland"
+    }
+  },
+  "summary": {
+    "native": {
+      "calls": 7,
+      "records_found": 7,
+      "correct_records": 7,
+      "wrong_records": 0,
+      "returned_record_counts": {
+        "GB": 7
+      }
+    },
+    "bf16_handoff": {
+      "calls": 42,
+      "records_found": 42,
+      "correct_records": 30,
+      "wrong_records": 12,
+      "returned_record_counts": {
+        "CH": 5,
+        "GB": 30,
+        "NO": 5,
+        "SE": 2
+      }
+    }
+  },
+  "calls": [
+    {
+      "mode": "native",
+      "source": null,
+      "target": "gemma3-12b",
+      "saved_answer": "The UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma3-12b",
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma3-12b",
+      "target": "llama31-8b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma3-12b",
+      "target": "ministral3-14b",
+      "saved_answer": "Norway",
+      "lookup_argument": "NO",
+      "returned_record": {
+        "id": "NO",
+        "country": "Norway"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma3-12b",
+      "target": "ministral3-8b",
+      "saved_answer": "UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma3-12b",
+      "target": "qwen3-14b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma3-12b",
+      "target": "qwen35-9b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma4-12b",
+      "target": "gemma3-12b",
+      "saved_answer": "Switzerland",
+      "lookup_argument": "CH",
+      "returned_record": {
+        "id": "CH",
+        "country": "Switzerland"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "native",
+      "source": null,
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma4-12b",
+      "target": "llama31-8b",
+      "saved_answer": "Sweden.",
+      "lookup_argument": "SE",
+      "returned_record": {
+        "id": "SE",
+        "country": "Sweden"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma4-12b",
+      "target": "ministral3-14b",
+      "saved_answer": "Norway",
+      "lookup_argument": "NO",
+      "returned_record": {
+        "id": "NO",
+        "country": "Norway"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma4-12b",
+      "target": "ministral3-8b",
+      "saved_answer": "Switzerland",
+      "lookup_argument": "CH",
+      "returned_record": {
+        "id": "CH",
+        "country": "Switzerland"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma4-12b",
+      "target": "qwen3-14b",
+      "saved_answer": "Sweden.",
+      "lookup_argument": "SE",
+      "returned_record": {
+        "id": "SE",
+        "country": "Sweden"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "gemma4-12b",
+      "target": "qwen35-9b",
+      "saved_answer": "United Kingdom",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "llama31-8b",
+      "target": "gemma3-12b",
+      "saved_answer": "The UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "llama31-8b",
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "native",
+      "source": null,
+      "target": "llama31-8b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "llama31-8b",
+      "target": "ministral3-14b",
+      "saved_answer": "Norway",
+      "lookup_argument": "NO",
+      "returned_record": {
+        "id": "NO",
+        "country": "Norway"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "llama31-8b",
+      "target": "ministral3-8b",
+      "saved_answer": "UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "llama31-8b",
+      "target": "qwen3-14b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "llama31-8b",
+      "target": "qwen35-9b",
+      "saved_answer": "UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-14b",
+      "target": "gemma3-12b",
+      "saved_answer": "The UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-14b",
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-14b",
+      "target": "llama31-8b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "native",
+      "source": null,
+      "target": "ministral3-14b",
+      "saved_answer": "The UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-14b",
+      "target": "ministral3-8b",
+      "saved_answer": "Switzerland",
+      "lookup_argument": "CH",
+      "returned_record": {
+        "id": "CH",
+        "country": "Switzerland"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-14b",
+      "target": "qwen3-14b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-14b",
+      "target": "qwen35-9b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-8b",
+      "target": "gemma3-12b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-8b",
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-8b",
+      "target": "llama31-8b",
+      "saved_answer": "The UK is not badly hit by the embargo.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-8b",
+      "target": "ministral3-14b",
+      "saved_answer": "Switzerland",
+      "lookup_argument": "CH",
+      "returned_record": {
+        "id": "CH",
+        "country": "Switzerland"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "native",
+      "source": null,
+      "target": "ministral3-8b",
+      "saved_answer": "UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-8b",
+      "target": "qwen3-14b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "ministral3-8b",
+      "target": "qwen35-9b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen3-14b",
+      "target": "gemma3-12b",
+      "saved_answer": "The UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen3-14b",
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen3-14b",
+      "target": "llama31-8b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen3-14b",
+      "target": "ministral3-14b",
+      "saved_answer": "Norway",
+      "lookup_argument": "NO",
+      "returned_record": {
+        "id": "NO",
+        "country": "Norway"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen3-14b",
+      "target": "ministral3-8b",
+      "saved_answer": "Switzerland",
+      "lookup_argument": "CH",
+      "returned_record": {
+        "id": "CH",
+        "country": "Switzerland"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "native",
+      "source": null,
+      "target": "qwen3-14b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen3-14b",
+      "target": "qwen35-9b",
+      "saved_answer": "United Kingdom",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen35-9b",
+      "target": "gemma3-12b",
+      "saved_answer": "The UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen35-9b",
+      "target": "gemma4-12b",
+      "saved_answer": "the UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen35-9b",
+      "target": "llama31-8b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen35-9b",
+      "target": "ministral3-14b",
+      "saved_answer": "Norway",
+      "lookup_argument": "NO",
+      "returned_record": {
+        "id": "NO",
+        "country": "Norway"
+      },
+      "correct_record": false
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen35-9b",
+      "target": "ministral3-8b",
+      "saved_answer": "UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "bf16_handoff",
+      "source": "qwen35-9b",
+      "target": "qwen3-14b",
+      "saved_answer": "The UK.",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    },
+    {
+      "mode": "native",
+      "source": null,
+      "target": "qwen35-9b",
+      "saved_answer": "UK",
+      "lookup_argument": "GB",
+      "returned_record": {
+        "id": "GB",
+        "country": "United Kingdom"
+      },
+      "correct_record": true
+    }
+  ]
+}

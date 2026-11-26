@@ -1,0 +1,2638 @@
+[
+  {
+    "id": "client-deadlines-a",
+    "family": "client-deadlines",
+    "variant": "a",
+    "counterpart_id": "client-deadlines-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n\n--- settings.py ---\nEDGE_BUDGET = 5\nCORE_BUDGET = 6\n\n--- app.py ---\nimport settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.CORE_BUDGET, \"push\": settings.EDGE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]",
+    "request": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline.",
+    "question": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "EDGE_BUDGET",
+      "CORE_BUDGET"
+    ],
+    "gold": "EDGE_BUDGET",
+    "golds": [
+      "EDGE_BUDGET"
+    ],
+    "foil": "CORE_BUDGET",
+    "replacement": 30,
+    "files": {
+      "README.md": "The sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n",
+      "settings.py": "EDGE_BUDGET = 5\nCORE_BUDGET = 6\n",
+      "app.py": "import settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.CORE_BUDGET, \"push\": settings.EDGE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "within_deadline",
+        "args": [
+          "upload",
+          20
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "within_deadline",
+        "args": [
+          "poll",
+          20
+        ]
+      }
+    },
+    "base_id": "client-deadlines-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "client-deadlines-b",
+    "family": "client-deadlines",
+    "variant": "b",
+    "counterpart_id": "client-deadlines-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n\n--- settings.py ---\nEDGE_BUDGET = 4\nCORE_BUDGET = 7\n\n--- app.py ---\nimport settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.EDGE_BUDGET, \"push\": settings.CORE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]",
+    "request": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline.",
+    "question": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "EDGE_BUDGET",
+      "CORE_BUDGET"
+    ],
+    "gold": "CORE_BUDGET",
+    "golds": [
+      "CORE_BUDGET"
+    ],
+    "foil": "EDGE_BUDGET",
+    "replacement": 30,
+    "files": {
+      "README.md": "The sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n",
+      "settings.py": "EDGE_BUDGET = 4\nCORE_BUDGET = 7\n",
+      "app.py": "import settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.EDGE_BUDGET, \"push\": settings.CORE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "within_deadline",
+        "args": [
+          "upload",
+          20
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "within_deadline",
+        "args": [
+          "poll",
+          20
+        ]
+      }
+    },
+    "base_id": "client-deadlines-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "batch-writer-a",
+    "family": "batch-writer",
+    "variant": "a",
+    "counterpart_id": "batch-writer-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThere are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n\n--- settings.py ---\nINLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n\n--- app.py ---\nimport settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.INLINE_WIDTH, \"catalogue\": settings.BUFFER_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]",
+    "request": "Group index events four per batch. Preserve accounting batch boundaries.",
+    "question": "Group index events four per batch. Preserve accounting batch boundaries. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INLINE_WIDTH",
+      "BUFFER_WIDTH"
+    ],
+    "gold": "BUFFER_WIDTH",
+    "golds": [
+      "BUFFER_WIDTH"
+    ],
+    "foil": "INLINE_WIDTH",
+    "replacement": 4,
+    "files": {
+      "README.md": "There are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n",
+      "settings.py": "INLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n",
+      "app.py": "import settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.INLINE_WIDTH, \"catalogue\": settings.BUFFER_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "batch_rows",
+        "args": [
+          "index",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ],
+        "expected": [
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          [
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      },
+      "guard": {
+        "function": "batch_rows",
+        "args": [
+          "accounting",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      }
+    },
+    "base_id": "batch-writer-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "batch-writer-b",
+    "family": "batch-writer",
+    "variant": "b",
+    "counterpart_id": "batch-writer-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThere are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n\n--- settings.py ---\nINLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n\n--- app.py ---\nimport settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.BUFFER_WIDTH, \"catalogue\": settings.INLINE_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]",
+    "request": "Group index events four per batch. Preserve accounting batch boundaries.",
+    "question": "Group index events four per batch. Preserve accounting batch boundaries. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INLINE_WIDTH",
+      "BUFFER_WIDTH"
+    ],
+    "gold": "INLINE_WIDTH",
+    "golds": [
+      "INLINE_WIDTH"
+    ],
+    "foil": "BUFFER_WIDTH",
+    "replacement": 4,
+    "files": {
+      "README.md": "There are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n",
+      "settings.py": "INLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n",
+      "app.py": "import settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.BUFFER_WIDTH, \"catalogue\": settings.INLINE_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "batch_rows",
+        "args": [
+          "index",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ],
+        "expected": [
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          [
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      },
+      "guard": {
+        "function": "batch_rows",
+        "args": [
+          "accounting",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      }
+    },
+    "base_id": "batch-writer-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "history-window-a",
+    "family": "history-window",
+    "variant": "a",
+    "counterpart_id": "history-window-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n\n--- settings.py ---\nHOT_WINDOW = 5\nWARM_WINDOW = 10\n\n--- app.py ---\nimport settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.HOT_WINDOW, \"personal\": settings.WARM_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]",
+    "request": "Keep public timeline entries for 30 days. Preserve the personal timeline window.",
+    "question": "Keep public timeline entries for 30 days. Preserve the personal timeline window. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "HOT_WINDOW",
+      "WARM_WINDOW"
+    ],
+    "gold": "HOT_WINDOW",
+    "golds": [
+      "HOT_WINDOW"
+    ],
+    "foil": "WARM_WINDOW",
+    "replacement": 30,
+    "files": {
+      "README.md": "The activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n",
+      "settings.py": "HOT_WINDOW = 5\nWARM_WINDOW = 10\n",
+      "app.py": "import settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.HOT_WINDOW, \"personal\": settings.WARM_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visible_ages",
+        "args": [
+          "community",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ],
+        "expected": [
+          2,
+          24,
+          30
+        ]
+      },
+      "guard": {
+        "function": "visible_ages",
+        "args": [
+          "mine",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ]
+      }
+    },
+    "base_id": "history-window-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "history-window-b",
+    "family": "history-window",
+    "variant": "b",
+    "counterpart_id": "history-window-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n\n--- settings.py ---\nHOT_WINDOW = 7\nWARM_WINDOW = 9\n\n--- app.py ---\nimport settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.WARM_WINDOW, \"personal\": settings.HOT_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]",
+    "request": "Keep public timeline entries for 30 days. Preserve the personal timeline window.",
+    "question": "Keep public timeline entries for 30 days. Preserve the personal timeline window. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "HOT_WINDOW",
+      "WARM_WINDOW"
+    ],
+    "gold": "WARM_WINDOW",
+    "golds": [
+      "WARM_WINDOW"
+    ],
+    "foil": "HOT_WINDOW",
+    "replacement": 30,
+    "files": {
+      "README.md": "The activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n",
+      "settings.py": "HOT_WINDOW = 7\nWARM_WINDOW = 9\n",
+      "app.py": "import settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.WARM_WINDOW, \"personal\": settings.HOT_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visible_ages",
+        "args": [
+          "community",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ],
+        "expected": [
+          2,
+          24,
+          30
+        ]
+      },
+      "guard": {
+        "function": "visible_ages",
+        "args": [
+          "mine",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ]
+      }
+    },
+    "base_id": "history-window-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "search-pages-a",
+    "family": "search-pages",
+    "variant": "a",
+    "counterpart_id": "search-pages-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nSearch pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n\n--- settings.py ---\nCOMPACT_COUNT = 3\nFULL_COUNT = 2\n\n--- app.py ---\nimport settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.COMPACT_COUNT, \"shelf\": settings.FULL_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]",
+    "request": "Use four hits per page on tablets. Desktop pagination should keep its current behavior.",
+    "question": "Use four hits per page on tablets. Desktop pagination should keep its current behavior. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "COMPACT_COUNT",
+      "FULL_COUNT"
+    ],
+    "gold": "FULL_COUNT",
+    "golds": [
+      "FULL_COUNT"
+    ],
+    "foil": "COMPACT_COUNT",
+    "replacement": 4,
+    "files": {
+      "README.md": "Search pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n",
+      "settings.py": "COMPACT_COUNT = 3\nFULL_COUNT = 2\n",
+      "app.py": "import settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.COMPACT_COUNT, \"shelf\": settings.FULL_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "page_hits",
+        "args": [
+          "tablet",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ],
+        "expected": [
+          "e",
+          "f",
+          "g",
+          "h"
+        ]
+      },
+      "guard": {
+        "function": "page_hits",
+        "args": [
+          "desktop",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ]
+      }
+    },
+    "base_id": "search-pages-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "search-pages-b",
+    "family": "search-pages",
+    "variant": "b",
+    "counterpart_id": "search-pages-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nSearch pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n\n--- settings.py ---\nCOMPACT_COUNT = 3\nFULL_COUNT = 1\n\n--- app.py ---\nimport settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.FULL_COUNT, \"shelf\": settings.COMPACT_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]",
+    "request": "Use four hits per page on tablets. Desktop pagination should keep its current behavior.",
+    "question": "Use four hits per page on tablets. Desktop pagination should keep its current behavior. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "COMPACT_COUNT",
+      "FULL_COUNT"
+    ],
+    "gold": "COMPACT_COUNT",
+    "golds": [
+      "COMPACT_COUNT"
+    ],
+    "foil": "FULL_COUNT",
+    "replacement": 4,
+    "files": {
+      "README.md": "Search pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n",
+      "settings.py": "COMPACT_COUNT = 3\nFULL_COUNT = 1\n",
+      "app.py": "import settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.FULL_COUNT, \"shelf\": settings.COMPACT_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "page_hits",
+        "args": [
+          "tablet",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ],
+        "expected": [
+          "e",
+          "f",
+          "g",
+          "h"
+        ]
+      },
+      "guard": {
+        "function": "page_hits",
+        "args": [
+          "desktop",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ]
+      }
+    },
+    "base_id": "search-pages-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "sync-attempts-a",
+    "family": "sync-attempts",
+    "variant": "a",
+    "counterpart_id": "sync-attempts-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n\n--- settings.py ---\nRAPID_CAP = 1\nSTEADY_CAP = 2\n\n--- app.py ---\nimport settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.RAPID_CAP, \"preview\": settings.STEADY_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False",
+    "request": "Allow final output four delivery attempts. Preserve the preview attempt budget.",
+    "question": "Allow final output four delivery attempts. Preserve the preview attempt budget. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "RAPID_CAP",
+      "STEADY_CAP"
+    ],
+    "gold": "RAPID_CAP",
+    "golds": [
+      "RAPID_CAP"
+    ],
+    "foil": "STEADY_CAP",
+    "replacement": 4,
+    "files": {
+      "README.md": "The sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n",
+      "settings.py": "RAPID_CAP = 1\nSTEADY_CAP = 2\n",
+      "app.py": "import settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.RAPID_CAP, \"preview\": settings.STEADY_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False\n"
+    },
+    "probes": {
+      "target": {
+        "function": "acknowledged",
+        "args": [
+          "publish",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "acknowledged",
+        "args": [
+          "redraw",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ]
+      }
+    },
+    "base_id": "sync-attempts-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "sync-attempts-b",
+    "family": "sync-attempts",
+    "variant": "b",
+    "counterpart_id": "sync-attempts-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n\n--- settings.py ---\nRAPID_CAP = 2\nSTEADY_CAP = 3\n\n--- app.py ---\nimport settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.STEADY_CAP, \"preview\": settings.RAPID_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False",
+    "request": "Allow final output four delivery attempts. Preserve the preview attempt budget.",
+    "question": "Allow final output four delivery attempts. Preserve the preview attempt budget. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "RAPID_CAP",
+      "STEADY_CAP"
+    ],
+    "gold": "STEADY_CAP",
+    "golds": [
+      "STEADY_CAP"
+    ],
+    "foil": "RAPID_CAP",
+    "replacement": 4,
+    "files": {
+      "README.md": "The sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n",
+      "settings.py": "RAPID_CAP = 2\nSTEADY_CAP = 3\n",
+      "app.py": "import settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.STEADY_CAP, \"preview\": settings.RAPID_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False\n"
+    },
+    "probes": {
+      "target": {
+        "function": "acknowledged",
+        "args": [
+          "publish",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "acknowledged",
+        "args": [
+          "redraw",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ]
+      }
+    },
+    "base_id": "sync-attempts-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "editor-events-a",
+    "family": "editor-events",
+    "variant": "a",
+    "counterpart_id": "editor-events-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nEditor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n\n--- settings.py ---\nLEAD_GAP = 3\nTRAIL_GAP = 2\n\n--- app.py ---\nimport settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.LEAD_GAP, \"scrub\": settings.TRAIL_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out",
+    "request": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged.",
+    "question": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged. The edit tool sets one existing integer constant in settings.py to 10. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "LEAD_GAP",
+      "TRAIL_GAP"
+    ],
+    "gold": "TRAIL_GAP",
+    "golds": [
+      "TRAIL_GAP"
+    ],
+    "foil": "LEAD_GAP",
+    "replacement": 10,
+    "files": {
+      "README.md": "Editor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n",
+      "settings.py": "LEAD_GAP = 3\nTRAIL_GAP = 2\n",
+      "app.py": "import settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.LEAD_GAP, \"scrub\": settings.TRAIL_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out\n"
+    },
+    "probes": {
+      "target": {
+        "function": "emit_times",
+        "args": [
+          "drag",
+          [
+            0,
+            7,
+            11
+          ]
+        ],
+        "expected": [
+          0,
+          11
+        ]
+      },
+      "guard": {
+        "function": "emit_times",
+        "args": [
+          "arrow",
+          [
+            0,
+            7,
+            11
+          ]
+        ]
+      }
+    },
+    "base_id": "editor-events-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "editor-events-b",
+    "family": "editor-events",
+    "variant": "b",
+    "counterpart_id": "editor-events-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nEditor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n\n--- settings.py ---\nLEAD_GAP = 4\nTRAIL_GAP = 1\n\n--- app.py ---\nimport settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.TRAIL_GAP, \"scrub\": settings.LEAD_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out",
+    "request": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged.",
+    "question": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged. The edit tool sets one existing integer constant in settings.py to 10. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "LEAD_GAP",
+      "TRAIL_GAP"
+    ],
+    "gold": "LEAD_GAP",
+    "golds": [
+      "LEAD_GAP"
+    ],
+    "foil": "TRAIL_GAP",
+    "replacement": 10,
+    "files": {
+      "README.md": "Editor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n",
+      "settings.py": "LEAD_GAP = 4\nTRAIL_GAP = 1\n",
+      "app.py": "import settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.TRAIL_GAP, \"scrub\": settings.LEAD_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out\n"
+    },
+    "probes": {
+      "target": {
+        "function": "emit_times",
+        "args": [
+          "drag",
+          [
+            0,
+            7,
+            11
+          ]
+        ],
+        "expected": [
+          0,
+          11
+        ]
+      },
+      "guard": {
+        "function": "emit_times",
+        "args": [
+          "arrow",
+          [
+            0,
+            7,
+            11
+          ]
+        ]
+      }
+    },
+    "base_id": "editor-events-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "chart-smoothing-a",
+    "family": "chart-smoothing",
+    "variant": "a",
+    "counterpart_id": "chart-smoothing-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n\n--- settings.py ---\nSERIES_SPAN = 1\nTRACE_SPAN = 4\n\n--- app.py ---\nimport settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.SERIES_SPAN, \"model\": settings.TRACE_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)",
+    "request": "Average the last three measured samples for the ribbon. Preserve the simulated overlay.",
+    "question": "Average the last three measured samples for the ribbon. Preserve the simulated overlay. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "SERIES_SPAN",
+      "TRACE_SPAN"
+    ],
+    "gold": "SERIES_SPAN",
+    "golds": [
+      "SERIES_SPAN"
+    ],
+    "foil": "TRACE_SPAN",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n",
+      "settings.py": "SERIES_SPAN = 1\nTRACE_SPAN = 4\n",
+      "app.py": "import settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.SERIES_SPAN, \"model\": settings.TRACE_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)\n"
+    },
+    "probes": {
+      "target": {
+        "function": "final_point",
+        "args": [
+          "ribbon",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ],
+        "expected": 12.0
+      },
+      "guard": {
+        "function": "final_point",
+        "args": [
+          "overlay",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ]
+      }
+    },
+    "base_id": "chart-smoothing-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "chart-smoothing-b",
+    "family": "chart-smoothing",
+    "variant": "b",
+    "counterpart_id": "chart-smoothing-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n\n--- settings.py ---\nSERIES_SPAN = 5\nTRACE_SPAN = 2\n\n--- app.py ---\nimport settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.TRACE_SPAN, \"model\": settings.SERIES_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)",
+    "request": "Average the last three measured samples for the ribbon. Preserve the simulated overlay.",
+    "question": "Average the last three measured samples for the ribbon. Preserve the simulated overlay. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "SERIES_SPAN",
+      "TRACE_SPAN"
+    ],
+    "gold": "TRACE_SPAN",
+    "golds": [
+      "TRACE_SPAN"
+    ],
+    "foil": "SERIES_SPAN",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n",
+      "settings.py": "SERIES_SPAN = 5\nTRACE_SPAN = 2\n",
+      "app.py": "import settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.TRACE_SPAN, \"model\": settings.SERIES_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)\n"
+    },
+    "probes": {
+      "target": {
+        "function": "final_point",
+        "args": [
+          "ribbon",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ],
+        "expected": 12.0
+      },
+      "guard": {
+        "function": "final_point",
+        "args": [
+          "overlay",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ]
+      }
+    },
+    "base_id": "chart-smoothing-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "label-layout-a",
+    "family": "label-layout",
+    "variant": "a",
+    "counterpart_id": "label-layout-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n\n--- settings.py ---\nINNER_INSET = 3\nOUTER_INSET = 2\n\n--- app.py ---\nimport settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.INNER_INSET if preset == \"card\" else settings.OUTER_INSET\n    return [inset, content_width + 2 * inset]",
+    "request": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged.",
+    "question": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged. The edit tool sets one existing integer constant in settings.py to 8. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INNER_INSET",
+      "OUTER_INSET"
+    ],
+    "gold": "OUTER_INSET",
+    "golds": [
+      "OUTER_INSET"
+    ],
+    "foil": "INNER_INSET",
+    "replacement": 8,
+    "files": {
+      "README.md": "The asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n",
+      "settings.py": "INNER_INSET = 3\nOUTER_INSET = 2\n",
+      "app.py": "import settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.INNER_INSET if preset == \"card\" else settings.OUTER_INSET\n    return [inset, content_width + 2 * inset]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "frame_geometry",
+        "args": [
+          "proof",
+          20
+        ],
+        "expected": [
+          8,
+          36
+        ]
+      },
+      "guard": {
+        "function": "frame_geometry",
+        "args": [
+          "catalogue",
+          20
+        ]
+      }
+    },
+    "base_id": "label-layout-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "label-layout-b",
+    "family": "label-layout",
+    "variant": "b",
+    "counterpart_id": "label-layout-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n\n--- settings.py ---\nINNER_INSET = 1\nOUTER_INSET = 4\n\n--- app.py ---\nimport settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.OUTER_INSET if preset == \"card\" else settings.INNER_INSET\n    return [inset, content_width + 2 * inset]",
+    "request": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged.",
+    "question": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged. The edit tool sets one existing integer constant in settings.py to 8. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INNER_INSET",
+      "OUTER_INSET"
+    ],
+    "gold": "INNER_INSET",
+    "golds": [
+      "INNER_INSET"
+    ],
+    "foil": "OUTER_INSET",
+    "replacement": 8,
+    "files": {
+      "README.md": "The asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n",
+      "settings.py": "INNER_INSET = 1\nOUTER_INSET = 4\n",
+      "app.py": "import settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.OUTER_INSET if preset == \"card\" else settings.INNER_INSET\n    return [inset, content_width + 2 * inset]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "frame_geometry",
+        "args": [
+          "proof",
+          20
+        ],
+        "expected": [
+          8,
+          36
+        ]
+      },
+      "guard": {
+        "function": "frame_geometry",
+        "args": [
+          "catalogue",
+          20
+        ]
+      }
+    },
+    "base_id": "label-layout-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "decimal-export-a",
+    "family": "decimal-export",
+    "variant": "a",
+    "counterpart_id": "decimal-export-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n\n--- settings.py ---\nTABLE_DIGITS = 1\nMETER_DIGITS = 2\n\n--- app.py ---\nimport settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.METER_DIGITS, \"exchange\": settings.TABLE_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")",
+    "request": "Print exactly three decimal places in data downloads. Preserve the on-screen reading.",
+    "question": "Print exactly three decimal places in data downloads. Preserve the on-screen reading. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "TABLE_DIGITS",
+      "METER_DIGITS"
+    ],
+    "gold": "TABLE_DIGITS",
+    "golds": [
+      "TABLE_DIGITS"
+    ],
+    "foil": "METER_DIGITS",
+    "replacement": 3,
+    "files": {
+      "README.md": "The laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n",
+      "settings.py": "TABLE_DIGITS = 1\nMETER_DIGITS = 2\n",
+      "app.py": "import settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.METER_DIGITS, \"exchange\": settings.TABLE_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")\n"
+    },
+    "probes": {
+      "target": {
+        "function": "display_number",
+        "args": [
+          "dump",
+          12.34567
+        ],
+        "expected": "12.346"
+      },
+      "guard": {
+        "function": "display_number",
+        "args": [
+          "show",
+          12.34567
+        ]
+      }
+    },
+    "base_id": "decimal-export-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "decimal-export-b",
+    "family": "decimal-export",
+    "variant": "b",
+    "counterpart_id": "decimal-export-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n\n--- settings.py ---\nTABLE_DIGITS = 1\nMETER_DIGITS = 4\n\n--- app.py ---\nimport settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.TABLE_DIGITS, \"exchange\": settings.METER_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")",
+    "request": "Print exactly three decimal places in data downloads. Preserve the on-screen reading.",
+    "question": "Print exactly three decimal places in data downloads. Preserve the on-screen reading. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "TABLE_DIGITS",
+      "METER_DIGITS"
+    ],
+    "gold": "METER_DIGITS",
+    "golds": [
+      "METER_DIGITS"
+    ],
+    "foil": "TABLE_DIGITS",
+    "replacement": 3,
+    "files": {
+      "README.md": "The laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n",
+      "settings.py": "TABLE_DIGITS = 1\nMETER_DIGITS = 4\n",
+      "app.py": "import settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.TABLE_DIGITS, \"exchange\": settings.METER_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")\n"
+    },
+    "probes": {
+      "target": {
+        "function": "display_number",
+        "args": [
+          "dump",
+          12.34567
+        ],
+        "expected": "12.346"
+      },
+      "guard": {
+        "function": "display_number",
+        "args": [
+          "show",
+          12.34567
+        ]
+      }
+    },
+    "base_id": "decimal-export-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "import-preamble-a",
+    "family": "import-preamble",
+    "variant": "a",
+    "counterpart_id": "import-preamble-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n\n--- settings.py ---\nFORM_OFFSET = 2\nLOG_OFFSET = 1\n\n--- app.py ---\nimport settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.LOG_OFFSET, \"counter\": settings.FORM_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]",
+    "request": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged.",
+    "question": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FORM_OFFSET",
+      "LOG_OFFSET"
+    ],
+    "gold": "LOG_OFFSET",
+    "golds": [
+      "LOG_OFFSET"
+    ],
+    "foil": "FORM_OFFSET",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n",
+      "settings.py": "FORM_OFFSET = 2\nLOG_OFFSET = 1\n",
+      "app.py": "import settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.LOG_OFFSET, \"counter\": settings.FORM_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "first_data_row",
+        "args": [
+          "sheet",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ],
+        "expected": "d"
+      },
+      "guard": {
+        "function": "first_data_row",
+        "args": [
+          "tape",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ]
+      }
+    },
+    "base_id": "import-preamble-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "import-preamble-b",
+    "family": "import-preamble",
+    "variant": "b",
+    "counterpart_id": "import-preamble-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n\n--- settings.py ---\nFORM_OFFSET = 4\nLOG_OFFSET = 1\n\n--- app.py ---\nimport settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.FORM_OFFSET, \"counter\": settings.LOG_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]",
+    "request": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged.",
+    "question": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FORM_OFFSET",
+      "LOG_OFFSET"
+    ],
+    "gold": "FORM_OFFSET",
+    "golds": [
+      "FORM_OFFSET"
+    ],
+    "foil": "LOG_OFFSET",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n",
+      "settings.py": "FORM_OFFSET = 4\nLOG_OFFSET = 1\n",
+      "app.py": "import settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.FORM_OFFSET, \"counter\": settings.LOG_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "first_data_row",
+        "args": [
+          "sheet",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ],
+        "expected": "d"
+      },
+      "guard": {
+        "function": "first_data_row",
+        "args": [
+          "tape",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ]
+      }
+    },
+    "base_id": "import-preamble-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "dependency-walk-a",
+    "family": "dependency-walk",
+    "variant": "a",
+    "counterpart_id": "dependency-walk-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n\n--- settings.py ---\nNARROW_DEPTH = 1\nBROAD_DEPTH = 2\n\n--- app.py ---\nimport settings\n\nLIMITS = {\"emit\": settings.NARROW_DEPTH, \"peek\": settings.BROAD_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result",
+    "request": "For release requests include dependencies through depth three. Preserve the inspector's traversal.",
+    "question": "For release requests include dependencies through depth three. Preserve the inspector's traversal. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "NARROW_DEPTH",
+      "BROAD_DEPTH"
+    ],
+    "gold": "NARROW_DEPTH",
+    "golds": [
+      "NARROW_DEPTH"
+    ],
+    "foil": "BROAD_DEPTH",
+    "replacement": 3,
+    "files": {
+      "README.md": "The explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n",
+      "settings.py": "NARROW_DEPTH = 1\nBROAD_DEPTH = 2\n",
+      "app.py": "import settings\n\nLIMITS = {\"emit\": settings.NARROW_DEPTH, \"peek\": settings.BROAD_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visit",
+        "args": [
+          "emit",
+          "app"
+        ],
+        "expected": [
+          "app",
+          "codec",
+          "table",
+          "bits"
+        ]
+      },
+      "guard": {
+        "function": "visit",
+        "args": [
+          "peek",
+          "app"
+        ]
+      }
+    },
+    "base_id": "dependency-walk-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "dependency-walk-b",
+    "family": "dependency-walk",
+    "variant": "b",
+    "counterpart_id": "dependency-walk-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n\n--- settings.py ---\nNARROW_DEPTH = 1\nBROAD_DEPTH = 2\n\n--- app.py ---\nimport settings\n\nLIMITS = {\"emit\": settings.BROAD_DEPTH, \"peek\": settings.NARROW_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result",
+    "request": "For release requests include dependencies through depth three. Preserve the inspector's traversal.",
+    "question": "For release requests include dependencies through depth three. Preserve the inspector's traversal. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "NARROW_DEPTH",
+      "BROAD_DEPTH"
+    ],
+    "gold": "BROAD_DEPTH",
+    "golds": [
+      "BROAD_DEPTH"
+    ],
+    "foil": "NARROW_DEPTH",
+    "replacement": 3,
+    "files": {
+      "README.md": "The explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n",
+      "settings.py": "NARROW_DEPTH = 1\nBROAD_DEPTH = 2\n",
+      "app.py": "import settings\n\nLIMITS = {\"emit\": settings.BROAD_DEPTH, \"peek\": settings.NARROW_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visit",
+        "args": [
+          "emit",
+          "app"
+        ],
+        "expected": [
+          "app",
+          "codec",
+          "table",
+          "bits"
+        ]
+      },
+      "guard": {
+        "function": "visit",
+        "args": [
+          "peek",
+          "app"
+        ]
+      }
+    },
+    "base_id": "dependency-walk-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "trace-buffer-a",
+    "family": "trace-buffer",
+    "variant": "a",
+    "counterpart_id": "trace-buffer-b",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nA review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n\n--- settings.py ---\nFRONT_CAPACITY = 3\nBACK_CAPACITY = 2\n\n--- app.py ---\nimport settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.FRONT_CAPACITY, \"history\": settings.BACK_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]",
+    "request": "Keep the four most recent actions in review-session history. Preserve macro recordings.",
+    "question": "Keep the four most recent actions in review-session history. Preserve macro recordings. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FRONT_CAPACITY",
+      "BACK_CAPACITY"
+    ],
+    "gold": "BACK_CAPACITY",
+    "golds": [
+      "BACK_CAPACITY"
+    ],
+    "foil": "FRONT_CAPACITY",
+    "replacement": 4,
+    "files": {
+      "README.md": "A review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n",
+      "settings.py": "FRONT_CAPACITY = 3\nBACK_CAPACITY = 2\n",
+      "app.py": "import settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.FRONT_CAPACITY, \"history\": settings.BACK_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "append_action",
+        "args": [
+          "review",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ],
+        "expected": [
+          "b",
+          "c",
+          "d",
+          "e"
+        ]
+      },
+      "guard": {
+        "function": "append_action",
+        "args": [
+          "record",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ]
+      }
+    },
+    "base_id": "trace-buffer-a",
+    "panel": "current_only"
+  },
+  {
+    "id": "trace-buffer-b",
+    "family": "trace-buffer",
+    "variant": "b",
+    "counterpart_id": "trace-buffer-a",
+    "document": "CURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nA review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n\n--- settings.py ---\nFRONT_CAPACITY = 1\nBACK_CAPACITY = 2\n\n--- app.py ---\nimport settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.BACK_CAPACITY, \"history\": settings.FRONT_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]",
+    "request": "Keep the four most recent actions in review-session history. Preserve macro recordings.",
+    "question": "Keep the four most recent actions in review-session history. Preserve macro recordings. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FRONT_CAPACITY",
+      "BACK_CAPACITY"
+    ],
+    "gold": "FRONT_CAPACITY",
+    "golds": [
+      "FRONT_CAPACITY"
+    ],
+    "foil": "BACK_CAPACITY",
+    "replacement": 4,
+    "files": {
+      "README.md": "A review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n",
+      "settings.py": "FRONT_CAPACITY = 1\nBACK_CAPACITY = 2\n",
+      "app.py": "import settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.BACK_CAPACITY, \"history\": settings.FRONT_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "append_action",
+        "args": [
+          "review",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ],
+        "expected": [
+          "b",
+          "c",
+          "d",
+          "e"
+        ]
+      },
+      "guard": {
+        "function": "append_action",
+        "args": [
+          "record",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ]
+      }
+    },
+    "base_id": "trace-buffer-b",
+    "panel": "current_only"
+  },
+  {
+    "id": "client-deadlines-a--archive",
+    "family": "client-deadlines",
+    "variant": "a",
+    "counterpart_id": "client-deadlines-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n\n--- settings.py ---\nEDGE_BUDGET = 4\nCORE_BUDGET = 7\n\n--- app.py ---\nimport settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.EDGE_BUDGET, \"push\": settings.CORE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n\n--- settings.py ---\nEDGE_BUDGET = 5\nCORE_BUDGET = 6\n\n--- app.py ---\nimport settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.CORE_BUDGET, \"push\": settings.EDGE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]",
+    "request": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline.",
+    "question": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "EDGE_BUDGET",
+      "CORE_BUDGET"
+    ],
+    "gold": "EDGE_BUDGET",
+    "golds": [
+      "EDGE_BUDGET"
+    ],
+    "foil": "CORE_BUDGET",
+    "replacement": 30,
+    "files": {
+      "README.md": "The sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n",
+      "settings.py": "EDGE_BUDGET = 5\nCORE_BUDGET = 6\n",
+      "app.py": "import settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.CORE_BUDGET, \"push\": settings.EDGE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "within_deadline",
+        "args": [
+          "upload",
+          20
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "within_deadline",
+        "args": [
+          "poll",
+          20
+        ]
+      }
+    },
+    "base_id": "client-deadlines-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "client-deadlines-b--archive",
+    "family": "client-deadlines",
+    "variant": "b",
+    "counterpart_id": "client-deadlines-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n\n--- settings.py ---\nEDGE_BUDGET = 5\nCORE_BUDGET = 6\n\n--- app.py ---\nimport settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.CORE_BUDGET, \"push\": settings.EDGE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n\n--- settings.py ---\nEDGE_BUDGET = 4\nCORE_BUDGET = 7\n\n--- app.py ---\nimport settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.EDGE_BUDGET, \"push\": settings.CORE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]",
+    "request": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline.",
+    "question": "Give artifact uploads a deadline of 30 seconds. Status polling must keep its existing deadline. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "EDGE_BUDGET",
+      "CORE_BUDGET"
+    ],
+    "gold": "CORE_BUDGET",
+    "golds": [
+      "CORE_BUDGET"
+    ],
+    "foil": "EDGE_BUDGET",
+    "replacement": 30,
+    "files": {
+      "README.md": "The sync client calls upload to send a cached artifact and poll to check its status. Both paths use the scheduler's integer deadline in seconds.\n",
+      "settings.py": "EDGE_BUDGET = 4\nCORE_BUDGET = 7\n",
+      "app.py": "import settings\n\nROUTES = {\"upload\": \"push\", \"poll\": \"peek\"}\nLIMITS = {\"peek\": settings.EDGE_BUDGET, \"push\": settings.CORE_BUDGET}\n\ndef within_deadline(operation, elapsed_seconds):\n    kind = ROUTES[operation]\n    return elapsed_seconds <= LIMITS[kind]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "within_deadline",
+        "args": [
+          "upload",
+          20
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "within_deadline",
+        "args": [
+          "poll",
+          20
+        ]
+      }
+    },
+    "base_id": "client-deadlines-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "batch-writer-a--archive",
+    "family": "batch-writer",
+    "variant": "a",
+    "counterpart_id": "batch-writer-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThere are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n\n--- settings.py ---\nINLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n\n--- app.py ---\nimport settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.BUFFER_WIDTH, \"catalogue\": settings.INLINE_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThere are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n\n--- settings.py ---\nINLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n\n--- app.py ---\nimport settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.INLINE_WIDTH, \"catalogue\": settings.BUFFER_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]",
+    "request": "Group index events four per batch. Preserve accounting batch boundaries.",
+    "question": "Group index events four per batch. Preserve accounting batch boundaries. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INLINE_WIDTH",
+      "BUFFER_WIDTH"
+    ],
+    "gold": "BUFFER_WIDTH",
+    "golds": [
+      "BUFFER_WIDTH"
+    ],
+    "foil": "INLINE_WIDTH",
+    "replacement": 4,
+    "files": {
+      "README.md": "There are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n",
+      "settings.py": "INLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n",
+      "app.py": "import settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.INLINE_WIDTH, \"catalogue\": settings.BUFFER_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "batch_rows",
+        "args": [
+          "index",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ],
+        "expected": [
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          [
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      },
+      "guard": {
+        "function": "batch_rows",
+        "args": [
+          "accounting",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      }
+    },
+    "base_id": "batch-writer-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "batch-writer-b--archive",
+    "family": "batch-writer",
+    "variant": "b",
+    "counterpart_id": "batch-writer-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThere are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n\n--- settings.py ---\nINLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n\n--- app.py ---\nimport settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.INLINE_WIDTH, \"catalogue\": settings.BUFFER_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThere are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n\n--- settings.py ---\nINLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n\n--- app.py ---\nimport settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.BUFFER_WIDTH, \"catalogue\": settings.INLINE_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]",
+    "request": "Group index events four per batch. Preserve accounting batch boundaries.",
+    "question": "Group index events four per batch. Preserve accounting batch boundaries. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INLINE_WIDTH",
+      "BUFFER_WIDTH"
+    ],
+    "gold": "INLINE_WIDTH",
+    "golds": [
+      "INLINE_WIDTH"
+    ],
+    "foil": "BUFFER_WIDTH",
+    "replacement": 4,
+    "files": {
+      "README.md": "There are two sinks. The catalogue writer handles index events. The ledger writer handles accounting events. Each sink groups consecutive rows before handing a batch to storage.\n",
+      "settings.py": "INLINE_WIDTH = 3\nBUFFER_WIDTH = 2\n",
+      "app.py": "import settings\n\nSINK = {\"index\": \"catalogue\", \"accounting\": \"ledger\"}\n\ndef batch_rows(event, rows):\n    widths = {\"ledger\": settings.BUFFER_WIDTH, \"catalogue\": settings.INLINE_WIDTH}\n    n = widths[SINK[event]]\n    return [rows[i:i+n] for i in range(0, len(rows), n)]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "batch_rows",
+        "args": [
+          "index",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ],
+        "expected": [
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          [
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      },
+      "guard": {
+        "function": "batch_rows",
+        "args": [
+          "accounting",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ]
+        ]
+      }
+    },
+    "base_id": "batch-writer-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "history-window-a--archive",
+    "family": "history-window",
+    "variant": "a",
+    "counterpart_id": "history-window-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n\n--- settings.py ---\nHOT_WINDOW = 7\nWARM_WINDOW = 9\n\n--- app.py ---\nimport settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.WARM_WINDOW, \"personal\": settings.HOT_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n\n--- settings.py ---\nHOT_WINDOW = 5\nWARM_WINDOW = 10\n\n--- app.py ---\nimport settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.HOT_WINDOW, \"personal\": settings.WARM_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]",
+    "request": "Keep public timeline entries for 30 days. Preserve the personal timeline window.",
+    "question": "Keep public timeline entries for 30 days. Preserve the personal timeline window. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "HOT_WINDOW",
+      "WARM_WINDOW"
+    ],
+    "gold": "HOT_WINDOW",
+    "golds": [
+      "HOT_WINDOW"
+    ],
+    "foil": "WARM_WINDOW",
+    "replacement": 30,
+    "files": {
+      "README.md": "The activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n",
+      "settings.py": "HOT_WINDOW = 5\nWARM_WINDOW = 10\n",
+      "app.py": "import settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.HOT_WINDOW, \"personal\": settings.WARM_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visible_ages",
+        "args": [
+          "community",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ],
+        "expected": [
+          2,
+          24,
+          30
+        ]
+      },
+      "guard": {
+        "function": "visible_ages",
+        "args": [
+          "mine",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ]
+      }
+    },
+    "base_id": "history-window-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "history-window-b--archive",
+    "family": "history-window",
+    "variant": "b",
+    "counterpart_id": "history-window-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n\n--- settings.py ---\nHOT_WINDOW = 5\nWARM_WINDOW = 10\n\n--- app.py ---\nimport settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.HOT_WINDOW, \"personal\": settings.WARM_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n\n--- settings.py ---\nHOT_WINDOW = 7\nWARM_WINDOW = 9\n\n--- app.py ---\nimport settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.WARM_WINDOW, \"personal\": settings.HOT_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]",
+    "request": "Keep public timeline entries for 30 days. Preserve the personal timeline window.",
+    "question": "Keep public timeline entries for 30 days. Preserve the personal timeline window. The edit tool sets one existing integer constant in settings.py to 30. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "HOT_WINDOW",
+      "WARM_WINDOW"
+    ],
+    "gold": "WARM_WINDOW",
+    "golds": [
+      "WARM_WINDOW"
+    ],
+    "foil": "HOT_WINDOW",
+    "replacement": 30,
+    "files": {
+      "README.md": "The activity feed has a public timeline and a personal timeline. A reader supplies the age of each entry in whole days. Returned entries preserve input order.\n",
+      "settings.py": "HOT_WINDOW = 7\nWARM_WINDOW = 9\n",
+      "app.py": "import settings\n\nFEEDS = {\"community\": \"public\", \"mine\": \"personal\"}\nAGE_DAYS = {\"public\": settings.WARM_WINDOW, \"personal\": settings.HOT_WINDOW}\n\ndef visible_ages(feed, ages):\n    horizon = AGE_DAYS[FEEDS[feed]]\n    return [age for age in ages if age <= horizon]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visible_ages",
+        "args": [
+          "community",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ],
+        "expected": [
+          2,
+          24,
+          30
+        ]
+      },
+      "guard": {
+        "function": "visible_ages",
+        "args": [
+          "mine",
+          [
+            2,
+            24,
+            30,
+            36
+          ]
+        ]
+      }
+    },
+    "base_id": "history-window-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "search-pages-a--archive",
+    "family": "search-pages",
+    "variant": "a",
+    "counterpart_id": "search-pages-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nSearch pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n\n--- settings.py ---\nCOMPACT_COUNT = 3\nFULL_COUNT = 1\n\n--- app.py ---\nimport settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.FULL_COUNT, \"shelf\": settings.COMPACT_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nSearch pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n\n--- settings.py ---\nCOMPACT_COUNT = 3\nFULL_COUNT = 2\n\n--- app.py ---\nimport settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.COMPACT_COUNT, \"shelf\": settings.FULL_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]",
+    "request": "Use four hits per page on tablets. Desktop pagination should keep its current behavior.",
+    "question": "Use four hits per page on tablets. Desktop pagination should keep its current behavior. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "COMPACT_COUNT",
+      "FULL_COUNT"
+    ],
+    "gold": "FULL_COUNT",
+    "golds": [
+      "FULL_COUNT"
+    ],
+    "foil": "COMPACT_COUNT",
+    "replacement": 4,
+    "files": {
+      "README.md": "Search pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n",
+      "settings.py": "COMPACT_COUNT = 3\nFULL_COUNT = 2\n",
+      "app.py": "import settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.COMPACT_COUNT, \"shelf\": settings.FULL_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "page_hits",
+        "args": [
+          "tablet",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ],
+        "expected": [
+          "e",
+          "f",
+          "g",
+          "h"
+        ]
+      },
+      "guard": {
+        "function": "page_hits",
+        "args": [
+          "desktop",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ]
+      }
+    },
+    "base_id": "search-pages-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "search-pages-b--archive",
+    "family": "search-pages",
+    "variant": "b",
+    "counterpart_id": "search-pages-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nSearch pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n\n--- settings.py ---\nCOMPACT_COUNT = 3\nFULL_COUNT = 2\n\n--- app.py ---\nimport settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.COMPACT_COUNT, \"shelf\": settings.FULL_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nSearch pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n\n--- settings.py ---\nCOMPACT_COUNT = 3\nFULL_COUNT = 1\n\n--- app.py ---\nimport settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.FULL_COUNT, \"shelf\": settings.COMPACT_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]",
+    "request": "Use four hits per page on tablets. Desktop pagination should keep its current behavior.",
+    "question": "Use four hits per page on tablets. Desktop pagination should keep its current behavior. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "COMPACT_COUNT",
+      "FULL_COUNT"
+    ],
+    "gold": "COMPACT_COUNT",
+    "golds": [
+      "COMPACT_COUNT"
+    ],
+    "foil": "FULL_COUNT",
+    "replacement": 4,
+    "files": {
+      "README.md": "Search pages start at page one. The tablet UI uses the shelf surface. The desktop UI uses the grid surface.\n",
+      "settings.py": "COMPACT_COUNT = 3\nFULL_COUNT = 1\n",
+      "app.py": "import settings\n\nSURFACE = {\"tablet\": \"shelf\", \"desktop\": \"grid\"}\nSIZE = {\"grid\": settings.FULL_COUNT, \"shelf\": settings.COMPACT_COUNT}\n\ndef page_hits(device, number, hits):\n    size = SIZE[SURFACE[device]]\n    start = (number - 1) * size\n    return hits[start:start + size]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "page_hits",
+        "args": [
+          "tablet",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ],
+        "expected": [
+          "e",
+          "f",
+          "g",
+          "h"
+        ]
+      },
+      "guard": {
+        "function": "page_hits",
+        "args": [
+          "desktop",
+          2,
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j"
+          ]
+        ]
+      }
+    },
+    "base_id": "search-pages-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "sync-attempts-a--archive",
+    "family": "sync-attempts",
+    "variant": "a",
+    "counterpart_id": "sync-attempts-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n\n--- settings.py ---\nRAPID_CAP = 2\nSTEADY_CAP = 3\n\n--- app.py ---\nimport settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.STEADY_CAP, \"preview\": settings.RAPID_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n\n--- settings.py ---\nRAPID_CAP = 1\nSTEADY_CAP = 2\n\n--- app.py ---\nimport settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.RAPID_CAP, \"preview\": settings.STEADY_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False",
+    "request": "Allow final output four delivery attempts. Preserve the preview attempt budget.",
+    "question": "Allow final output four delivery attempts. Preserve the preview attempt budget. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "RAPID_CAP",
+      "STEADY_CAP"
+    ],
+    "gold": "RAPID_CAP",
+    "golds": [
+      "RAPID_CAP"
+    ],
+    "foil": "STEADY_CAP",
+    "replacement": 4,
+    "files": {
+      "README.md": "The sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n",
+      "settings.py": "RAPID_CAP = 1\nSTEADY_CAP = 2\n",
+      "app.py": "import settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.RAPID_CAP, \"preview\": settings.STEADY_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False\n"
+    },
+    "probes": {
+      "target": {
+        "function": "acknowledged",
+        "args": [
+          "publish",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "acknowledged",
+        "args": [
+          "redraw",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ]
+      }
+    },
+    "base_id": "sync-attempts-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "sync-attempts-b--archive",
+    "family": "sync-attempts",
+    "variant": "b",
+    "counterpart_id": "sync-attempts-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n\n--- settings.py ---\nRAPID_CAP = 1\nSTEADY_CAP = 2\n\n--- app.py ---\nimport settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.RAPID_CAP, \"preview\": settings.STEADY_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n\n--- settings.py ---\nRAPID_CAP = 2\nSTEADY_CAP = 3\n\n--- app.py ---\nimport settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.STEADY_CAP, \"preview\": settings.RAPID_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False",
+    "request": "Allow final output four delivery attempts. Preserve the preview attempt budget.",
+    "question": "Allow final output four delivery attempts. Preserve the preview attempt budget. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "RAPID_CAP",
+      "STEADY_CAP"
+    ],
+    "gold": "STEADY_CAP",
+    "golds": [
+      "STEADY_CAP"
+    ],
+    "foil": "RAPID_CAP",
+    "replacement": 4,
+    "files": {
+      "README.md": "The sync worker records one boolean receipt for each attempted delivery. A redraw submits preview output; a publish submits final output.\n",
+      "settings.py": "RAPID_CAP = 2\nSTEADY_CAP = 3\n",
+      "app.py": "import settings\n\ndef acknowledged(event, receipts):\n    channel = {\"redraw\": \"preview\", \"publish\": \"final\"}[event]\n    budgets = {\"final\": settings.STEADY_CAP, \"preview\": settings.RAPID_CAP}\n    for index, received in enumerate(receipts):\n        if index >= budgets[channel]:\n            break\n        if received:\n            return True\n    return False\n"
+    },
+    "probes": {
+      "target": {
+        "function": "acknowledged",
+        "args": [
+          "publish",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ],
+        "expected": true
+      },
+      "guard": {
+        "function": "acknowledged",
+        "args": [
+          "redraw",
+          [
+            false,
+            false,
+            false,
+            true
+          ]
+        ]
+      }
+    },
+    "base_id": "sync-attempts-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "editor-events-a--archive",
+    "family": "editor-events",
+    "variant": "a",
+    "counterpart_id": "editor-events-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nEditor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n\n--- settings.py ---\nLEAD_GAP = 4\nTRAIL_GAP = 1\n\n--- app.py ---\nimport settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.TRAIL_GAP, \"scrub\": settings.LEAD_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nEditor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n\n--- settings.py ---\nLEAD_GAP = 3\nTRAIL_GAP = 2\n\n--- app.py ---\nimport settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.LEAD_GAP, \"scrub\": settings.TRAIL_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out",
+    "request": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged.",
+    "question": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged. The edit tool sets one existing integer constant in settings.py to 10. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "LEAD_GAP",
+      "TRAIL_GAP"
+    ],
+    "gold": "TRAIL_GAP",
+    "golds": [
+      "TRAIL_GAP"
+    ],
+    "foil": "LEAD_GAP",
+    "replacement": 10,
+    "files": {
+      "README.md": "Editor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n",
+      "settings.py": "LEAD_GAP = 3\nTRAIL_GAP = 2\n",
+      "app.py": "import settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.LEAD_GAP, \"scrub\": settings.TRAIL_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out\n"
+    },
+    "probes": {
+      "target": {
+        "function": "emit_times",
+        "args": [
+          "drag",
+          [
+            0,
+            7,
+            11
+          ]
+        ],
+        "expected": [
+          0,
+          11
+        ]
+      },
+      "guard": {
+        "function": "emit_times",
+        "args": [
+          "arrow",
+          [
+            0,
+            7,
+            11
+          ]
+        ]
+      }
+    },
+    "base_id": "editor-events-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "editor-events-b--archive",
+    "family": "editor-events",
+    "variant": "b",
+    "counterpart_id": "editor-events-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nEditor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n\n--- settings.py ---\nLEAD_GAP = 3\nTRAIL_GAP = 2\n\n--- app.py ---\nimport settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.LEAD_GAP, \"scrub\": settings.TRAIL_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nEditor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n\n--- settings.py ---\nLEAD_GAP = 4\nTRAIL_GAP = 1\n\n--- app.py ---\nimport settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.TRAIL_GAP, \"scrub\": settings.LEAD_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out",
+    "request": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged.",
+    "question": "Space emitted timeline scrub events at least 10 ms apart. Keep caret motion unchanged. The edit tool sets one existing integer constant in settings.py to 10. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "LEAD_GAP",
+      "TRAIL_GAP"
+    ],
+    "gold": "LEAD_GAP",
+    "golds": [
+      "LEAD_GAP"
+    ],
+    "foil": "TRAIL_GAP",
+    "replacement": 10,
+    "files": {
+      "README.md": "Editor events include caret motion from the keyboard and scrubbing from the timeline. Events closer than a stream's minimum gap are coalesced into the last emitted event.\n",
+      "settings.py": "LEAD_GAP = 4\nTRAIL_GAP = 1\n",
+      "app.py": "import settings\n\nEVENT_KIND = {\"arrow\": \"caret\", \"drag\": \"scrub\"}\nGAP = {\"caret\": settings.TRAIL_GAP, \"scrub\": settings.LEAD_GAP}\n\ndef emit_times(event, times):\n    out = []\n    gap = GAP[EVENT_KIND[event]]\n    for now in times:\n        if not out or now - out[-1] >= gap:\n            out.append(now)\n    return out\n"
+    },
+    "probes": {
+      "target": {
+        "function": "emit_times",
+        "args": [
+          "drag",
+          [
+            0,
+            7,
+            11
+          ]
+        ],
+        "expected": [
+          0,
+          11
+        ]
+      },
+      "guard": {
+        "function": "emit_times",
+        "args": [
+          "arrow",
+          [
+            0,
+            7,
+            11
+          ]
+        ]
+      }
+    },
+    "base_id": "editor-events-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "chart-smoothing-a--archive",
+    "family": "chart-smoothing",
+    "variant": "a",
+    "counterpart_id": "chart-smoothing-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nTwo plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n\n--- settings.py ---\nSERIES_SPAN = 5\nTRACE_SPAN = 2\n\n--- app.py ---\nimport settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.TRACE_SPAN, \"model\": settings.SERIES_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n\n--- settings.py ---\nSERIES_SPAN = 1\nTRACE_SPAN = 4\n\n--- app.py ---\nimport settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.SERIES_SPAN, \"model\": settings.TRACE_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)",
+    "request": "Average the last three measured samples for the ribbon. Preserve the simulated overlay.",
+    "question": "Average the last three measured samples for the ribbon. Preserve the simulated overlay. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "SERIES_SPAN",
+      "TRACE_SPAN"
+    ],
+    "gold": "SERIES_SPAN",
+    "golds": [
+      "SERIES_SPAN"
+    ],
+    "foil": "TRACE_SPAN",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n",
+      "settings.py": "SERIES_SPAN = 1\nTRACE_SPAN = 4\n",
+      "app.py": "import settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.SERIES_SPAN, \"model\": settings.TRACE_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)\n"
+    },
+    "probes": {
+      "target": {
+        "function": "final_point",
+        "args": [
+          "ribbon",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ],
+        "expected": 12.0
+      },
+      "guard": {
+        "function": "final_point",
+        "args": [
+          "overlay",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ]
+      }
+    },
+    "base_id": "chart-smoothing-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "chart-smoothing-b--archive",
+    "family": "chart-smoothing",
+    "variant": "b",
+    "counterpart_id": "chart-smoothing-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nTwo plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n\n--- settings.py ---\nSERIES_SPAN = 1\nTRACE_SPAN = 4\n\n--- app.py ---\nimport settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.SERIES_SPAN, \"model\": settings.TRACE_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n\n--- settings.py ---\nSERIES_SPAN = 5\nTRACE_SPAN = 2\n\n--- app.py ---\nimport settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.TRACE_SPAN, \"model\": settings.SERIES_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)",
+    "request": "Average the last three measured samples for the ribbon. Preserve the simulated overlay.",
+    "question": "Average the last three measured samples for the ribbon. Preserve the simulated overlay. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "SERIES_SPAN",
+      "TRACE_SPAN"
+    ],
+    "gold": "TRACE_SPAN",
+    "golds": [
+      "TRACE_SPAN"
+    ],
+    "foil": "SERIES_SPAN",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two plots share the numerical renderer. The ribbon shows measured samples and the overlay shows simulated samples. The final displayed point is the mean of a trailing window.\n",
+      "settings.py": "SERIES_SPAN = 5\nTRACE_SPAN = 2\n",
+      "app.py": "import settings\n\nSTREAM = {\"ribbon\": \"probe\", \"overlay\": \"model\"}\nWINDOWS = {\"probe\": settings.TRACE_SPAN, \"model\": settings.SERIES_SPAN}\n\ndef final_point(plot, samples):\n    window = samples[-WINDOWS[STREAM[plot]]:]\n    return sum(window) / len(window)\n"
+    },
+    "probes": {
+      "target": {
+        "function": "final_point",
+        "args": [
+          "ribbon",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ],
+        "expected": 12.0
+      },
+      "guard": {
+        "function": "final_point",
+        "args": [
+          "overlay",
+          [
+            0,
+            0,
+            0,
+            0,
+            12,
+            24
+          ]
+        ]
+      }
+    },
+    "base_id": "chart-smoothing-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "label-layout-a--archive",
+    "family": "label-layout",
+    "variant": "a",
+    "counterpart_id": "label-layout-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n\n--- settings.py ---\nINNER_INSET = 1\nOUTER_INSET = 4\n\n--- app.py ---\nimport settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.OUTER_INSET if preset == \"card\" else settings.INNER_INSET\n    return [inset, content_width + 2 * inset]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n\n--- settings.py ---\nINNER_INSET = 3\nOUTER_INSET = 2\n\n--- app.py ---\nimport settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.INNER_INSET if preset == \"card\" else settings.OUTER_INSET\n    return [inset, content_width + 2 * inset]",
+    "request": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged.",
+    "question": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged. The edit tool sets one existing integer constant in settings.py to 8. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INNER_INSET",
+      "OUTER_INSET"
+    ],
+    "gold": "OUTER_INSET",
+    "golds": [
+      "OUTER_INSET"
+    ],
+    "foil": "INNER_INSET",
+    "replacement": 8,
+    "files": {
+      "README.md": "The asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n",
+      "settings.py": "INNER_INSET = 3\nOUTER_INSET = 2\n",
+      "app.py": "import settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.INNER_INSET if preset == \"card\" else settings.OUTER_INSET\n    return [inset, content_width + 2 * inset]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "frame_geometry",
+        "args": [
+          "proof",
+          20
+        ],
+        "expected": [
+          8,
+          36
+        ]
+      },
+      "guard": {
+        "function": "frame_geometry",
+        "args": [
+          "catalogue",
+          20
+        ]
+      }
+    },
+    "base_id": "label-layout-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "label-layout-b--archive",
+    "family": "label-layout",
+    "variant": "b",
+    "counterpart_id": "label-layout-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n\n--- settings.py ---\nINNER_INSET = 3\nOUTER_INSET = 2\n\n--- app.py ---\nimport settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.INNER_INSET if preset == \"card\" else settings.OUTER_INSET\n    return [inset, content_width + 2 * inset]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n\n--- settings.py ---\nINNER_INSET = 1\nOUTER_INSET = 4\n\n--- app.py ---\nimport settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.OUTER_INSET if preset == \"card\" else settings.INNER_INSET\n    return [inset, content_width + 2 * inset]",
+    "request": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged.",
+    "question": "Put eight pixels of padding on each side for proof sheets. Keep catalogue card geometry unchanged. The edit tool sets one existing integer constant in settings.py to 8. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "INNER_INSET",
+      "OUTER_INSET"
+    ],
+    "gold": "INNER_INSET",
+    "golds": [
+      "INNER_INSET"
+    ],
+    "foil": "OUTER_INSET",
+    "replacement": 8,
+    "files": {
+      "README.md": "The asset renderer produces proof sheets and catalogue cards. A sheet places the label inside a padded frame; a card uses the same rendering helper with its own inset.\n",
+      "settings.py": "INNER_INSET = 1\nOUTER_INSET = 4\n",
+      "app.py": "import settings\n\ndef frame_geometry(output, content_width):\n    preset = {\"proof\": \"sheet\", \"catalogue\": \"card\"}[output]\n    inset = settings.OUTER_INSET if preset == \"card\" else settings.INNER_INSET\n    return [inset, content_width + 2 * inset]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "frame_geometry",
+        "args": [
+          "proof",
+          20
+        ],
+        "expected": [
+          8,
+          36
+        ]
+      },
+      "guard": {
+        "function": "frame_geometry",
+        "args": [
+          "catalogue",
+          20
+        ]
+      }
+    },
+    "base_id": "label-layout-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "decimal-export-a--archive",
+    "family": "decimal-export",
+    "variant": "a",
+    "counterpart_id": "decimal-export-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n\n--- settings.py ---\nTABLE_DIGITS = 1\nMETER_DIGITS = 4\n\n--- app.py ---\nimport settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.TABLE_DIGITS, \"exchange\": settings.METER_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n\n--- settings.py ---\nTABLE_DIGITS = 1\nMETER_DIGITS = 2\n\n--- app.py ---\nimport settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.METER_DIGITS, \"exchange\": settings.TABLE_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")",
+    "request": "Print exactly three decimal places in data downloads. Preserve the on-screen reading.",
+    "question": "Print exactly three decimal places in data downloads. Preserve the on-screen reading. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "TABLE_DIGITS",
+      "METER_DIGITS"
+    ],
+    "gold": "TABLE_DIGITS",
+    "golds": [
+      "TABLE_DIGITS"
+    ],
+    "foil": "METER_DIGITS",
+    "replacement": 3,
+    "files": {
+      "README.md": "The laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n",
+      "settings.py": "TABLE_DIGITS = 1\nMETER_DIGITS = 2\n",
+      "app.py": "import settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.METER_DIGITS, \"exchange\": settings.TABLE_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")\n"
+    },
+    "probes": {
+      "target": {
+        "function": "display_number",
+        "args": [
+          "dump",
+          12.34567
+        ],
+        "expected": "12.346"
+      },
+      "guard": {
+        "function": "display_number",
+        "args": [
+          "show",
+          12.34567
+        ]
+      }
+    },
+    "base_id": "decimal-export-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "decimal-export-b--archive",
+    "family": "decimal-export",
+    "variant": "b",
+    "counterpart_id": "decimal-export-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n\n--- settings.py ---\nTABLE_DIGITS = 1\nMETER_DIGITS = 2\n\n--- app.py ---\nimport settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.METER_DIGITS, \"exchange\": settings.TABLE_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n\n--- settings.py ---\nTABLE_DIGITS = 1\nMETER_DIGITS = 4\n\n--- app.py ---\nimport settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.TABLE_DIGITS, \"exchange\": settings.METER_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")",
+    "request": "Print exactly three decimal places in data downloads. Preserve the on-screen reading.",
+    "question": "Print exactly three decimal places in data downloads. Preserve the on-screen reading. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "TABLE_DIGITS",
+      "METER_DIGITS"
+    ],
+    "gold": "METER_DIGITS",
+    "golds": [
+      "METER_DIGITS"
+    ],
+    "foil": "TABLE_DIGITS",
+    "replacement": 3,
+    "files": {
+      "README.md": "The laboratory exporter formats the reading shown on screen separately from the reading sent with a data download. The CLI command dump produces the download.\n",
+      "settings.py": "TABLE_DIGITS = 1\nMETER_DIGITS = 4\n",
+      "app.py": "import settings\n\nVIEW = {\"dump\": \"exchange\", \"show\": \"monitor\"}\nDIGITS = {\"monitor\": settings.TABLE_DIGITS, \"exchange\": settings.METER_DIGITS}\n\ndef display_number(command, value):\n    places = DIGITS[VIEW[command]]\n    return format(value, \".\" + str(places) + \"f\")\n"
+    },
+    "probes": {
+      "target": {
+        "function": "display_number",
+        "args": [
+          "dump",
+          12.34567
+        ],
+        "expected": "12.346"
+      },
+      "guard": {
+        "function": "display_number",
+        "args": [
+          "show",
+          12.34567
+        ]
+      }
+    },
+    "base_id": "decimal-export-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "import-preamble-a--archive",
+    "family": "import-preamble",
+    "variant": "a",
+    "counterpart_id": "import-preamble-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nTwo input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n\n--- settings.py ---\nFORM_OFFSET = 4\nLOG_OFFSET = 1\n\n--- app.py ---\nimport settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.FORM_OFFSET, \"counter\": settings.LOG_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n\n--- settings.py ---\nFORM_OFFSET = 2\nLOG_OFFSET = 1\n\n--- app.py ---\nimport settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.LOG_OFFSET, \"counter\": settings.FORM_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]",
+    "request": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged.",
+    "question": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FORM_OFFSET",
+      "LOG_OFFSET"
+    ],
+    "gold": "LOG_OFFSET",
+    "golds": [
+      "LOG_OFFSET"
+    ],
+    "foil": "FORM_OFFSET",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n",
+      "settings.py": "FORM_OFFSET = 2\nLOG_OFFSET = 1\n",
+      "app.py": "import settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.LOG_OFFSET, \"counter\": settings.FORM_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "first_data_row",
+        "args": [
+          "sheet",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ],
+        "expected": "d"
+      },
+      "guard": {
+        "function": "first_data_row",
+        "args": [
+          "tape",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ]
+      }
+    },
+    "base_id": "import-preamble-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "import-preamble-b--archive",
+    "family": "import-preamble",
+    "variant": "b",
+    "counterpart_id": "import-preamble-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nTwo input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n\n--- settings.py ---\nFORM_OFFSET = 2\nLOG_OFFSET = 1\n\n--- app.py ---\nimport settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.LOG_OFFSET, \"counter\": settings.FORM_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nTwo input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n\n--- settings.py ---\nFORM_OFFSET = 4\nLOG_OFFSET = 1\n\n--- app.py ---\nimport settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.FORM_OFFSET, \"counter\": settings.LOG_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]",
+    "request": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged.",
+    "question": "Skip three metadata rows for catalogue spreadsheets. Keep counter snapshot imports unchanged. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FORM_OFFSET",
+      "LOG_OFFSET"
+    ],
+    "gold": "FORM_OFFSET",
+    "golds": [
+      "FORM_OFFSET"
+    ],
+    "foil": "LOG_OFFSET",
+    "replacement": 3,
+    "files": {
+      "README.md": "Two input adapters feed the importer. Spreadsheets exported by the catalogue team arrive as a sheet. Snapshots produced by the counter arrive as a tape. Each can prepend metadata rows.\n",
+      "settings.py": "FORM_OFFSET = 4\nLOG_OFFSET = 1\n",
+      "app.py": "import settings\n\nADAPTER = {\"sheet\": \"catalogue\", \"tape\": \"counter\"}\nSKIPS = {\"catalogue\": settings.FORM_OFFSET, \"counter\": settings.LOG_OFFSET}\n\ndef first_data_row(source, rows):\n    skip = SKIPS[ADAPTER[source]]\n    return rows[skip]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "first_data_row",
+        "args": [
+          "sheet",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ],
+        "expected": "d"
+      },
+      "guard": {
+        "function": "first_data_row",
+        "args": [
+          "tape",
+          [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
+        ]
+      }
+    },
+    "base_id": "import-preamble-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "dependency-walk-a--archive",
+    "family": "dependency-walk",
+    "variant": "a",
+    "counterpart_id": "dependency-walk-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n\n--- settings.py ---\nNARROW_DEPTH = 1\nBROAD_DEPTH = 2\n\n--- app.py ---\nimport settings\n\nLIMITS = {\"emit\": settings.BROAD_DEPTH, \"peek\": settings.NARROW_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n\n--- settings.py ---\nNARROW_DEPTH = 1\nBROAD_DEPTH = 2\n\n--- app.py ---\nimport settings\n\nLIMITS = {\"emit\": settings.NARROW_DEPTH, \"peek\": settings.BROAD_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result",
+    "request": "For release requests include dependencies through depth three. Preserve the inspector's traversal.",
+    "question": "For release requests include dependencies through depth three. Preserve the inspector's traversal. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "NARROW_DEPTH",
+      "BROAD_DEPTH"
+    ],
+    "gold": "NARROW_DEPTH",
+    "golds": [
+      "NARROW_DEPTH"
+    ],
+    "foil": "BROAD_DEPTH",
+    "replacement": 3,
+    "files": {
+      "README.md": "The explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n",
+      "settings.py": "NARROW_DEPTH = 1\nBROAD_DEPTH = 2\n",
+      "app.py": "import settings\n\nLIMITS = {\"emit\": settings.NARROW_DEPTH, \"peek\": settings.BROAD_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visit",
+        "args": [
+          "emit",
+          "app"
+        ],
+        "expected": [
+          "app",
+          "codec",
+          "table",
+          "bits"
+        ]
+      },
+      "guard": {
+        "function": "visit",
+        "args": [
+          "peek",
+          "app"
+        ]
+      }
+    },
+    "base_id": "dependency-walk-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "dependency-walk-b--archive",
+    "family": "dependency-walk",
+    "variant": "b",
+    "counterpart_id": "dependency-walk-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nThe explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n\n--- settings.py ---\nNARROW_DEPTH = 1\nBROAD_DEPTH = 2\n\n--- app.py ---\nimport settings\n\nLIMITS = {\"emit\": settings.NARROW_DEPTH, \"peek\": settings.BROAD_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nThe explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n\n--- settings.py ---\nNARROW_DEPTH = 1\nBROAD_DEPTH = 2\n\n--- app.py ---\nimport settings\n\nLIMITS = {\"emit\": settings.BROAD_DEPTH, \"peek\": settings.NARROW_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result",
+    "request": "For release requests include dependencies through depth three. Preserve the inspector's traversal.",
+    "question": "For release requests include dependencies through depth three. Preserve the inspector's traversal. The edit tool sets one existing integer constant in settings.py to 3. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "NARROW_DEPTH",
+      "BROAD_DEPTH"
+    ],
+    "gold": "BROAD_DEPTH",
+    "golds": [
+      "BROAD_DEPTH"
+    ],
+    "foil": "NARROW_DEPTH",
+    "replacement": 3,
+    "files": {
+      "README.md": "The explorer builds a small tree for each build request. A release request uses the emit entry point; the interactive inspector uses the peek entry point. The root is depth zero.\n",
+      "settings.py": "NARROW_DEPTH = 1\nBROAD_DEPTH = 2\n",
+      "app.py": "import settings\n\nLIMITS = {\"emit\": settings.BROAD_DEPTH, \"peek\": settings.NARROW_DEPTH}\nNEXT = {\"app\": [\"codec\"], \"codec\": [\"table\"], \"table\": [\"bits\"], \"bits\": [\"atom\"]}\n\ndef visit(command, root):\n    frontier = [root]\n    result = list(frontier)\n    for step in range(LIMITS[command]):\n        frontier = [child for node in frontier for child in NEXT.get(node, [])]\n        result.extend(frontier)\n    return result\n"
+    },
+    "probes": {
+      "target": {
+        "function": "visit",
+        "args": [
+          "emit",
+          "app"
+        ],
+        "expected": [
+          "app",
+          "codec",
+          "table",
+          "bits"
+        ]
+      },
+      "guard": {
+        "function": "visit",
+        "args": [
+          "peek",
+          "app"
+        ]
+      }
+    },
+    "base_id": "dependency-walk-b",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "trace-buffer-a--archive",
+    "family": "trace-buffer",
+    "variant": "a",
+    "counterpart_id": "trace-buffer-b",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nA review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n\n--- settings.py ---\nFRONT_CAPACITY = 1\nBACK_CAPACITY = 2\n\n--- app.py ---\nimport settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.BACK_CAPACITY, \"history\": settings.FRONT_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nA review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n\n--- settings.py ---\nFRONT_CAPACITY = 3\nBACK_CAPACITY = 2\n\n--- app.py ---\nimport settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.FRONT_CAPACITY, \"history\": settings.BACK_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]",
+    "request": "Keep the four most recent actions in review-session history. Preserve macro recordings.",
+    "question": "Keep the four most recent actions in review-session history. Preserve macro recordings. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FRONT_CAPACITY",
+      "BACK_CAPACITY"
+    ],
+    "gold": "BACK_CAPACITY",
+    "golds": [
+      "BACK_CAPACITY"
+    ],
+    "foil": "FRONT_CAPACITY",
+    "replacement": 4,
+    "files": {
+      "README.md": "A review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n",
+      "settings.py": "FRONT_CAPACITY = 3\nBACK_CAPACITY = 2\n",
+      "app.py": "import settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.FRONT_CAPACITY, \"history\": settings.BACK_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "append_action",
+        "args": [
+          "review",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ],
+        "expected": [
+          "b",
+          "c",
+          "d",
+          "e"
+        ]
+      },
+      "guard": {
+        "function": "append_action",
+        "args": [
+          "record",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ]
+      }
+    },
+    "base_id": "trace-buffer-a",
+    "panel": "archived_then_current"
+  },
+  {
+    "id": "trace-buffer-b--archive",
+    "family": "trace-buffer",
+    "variant": "b",
+    "counterpart_id": "trace-buffer-a",
+    "document": "ARCHIVED WORKING TREE (superseded, read-only)\n\n--- README.md ---\nA review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n\n--- settings.py ---\nFRONT_CAPACITY = 3\nBACK_CAPACITY = 2\n\n--- app.py ---\nimport settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.FRONT_CAPACITY, \"history\": settings.BACK_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]\n\nEND OF ARCHIVED WORKING TREE\n\nCURRENT WORKING TREE (edit this version)\n\n--- README.md ---\nA review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n\n--- settings.py ---\nFRONT_CAPACITY = 1\nBACK_CAPACITY = 2\n\n--- app.py ---\nimport settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.BACK_CAPACITY, \"history\": settings.FRONT_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]",
+    "request": "Keep the four most recent actions in review-session history. Preserve macro recordings.",
+    "question": "Keep the four most recent actions in review-session history. Preserve macro recordings. The edit tool sets one existing integer constant in settings.py to 4. Choose the name it must change. Reply with just one JSON object with the single key \"symbol\" and the chosen name as its string value. Do not include markdown or explanation.",
+    "choices": [
+      "FRONT_CAPACITY",
+      "BACK_CAPACITY"
+    ],
+    "gold": "FRONT_CAPACITY",
+    "golds": [
+      "FRONT_CAPACITY"
+    ],
+    "foil": "BACK_CAPACITY",
+    "replacement": 4,
+    "files": {
+      "README.md": "A review session keeps the most recent actions so the UI can show history. A recording session feeds the macro editor through the same bounded-buffer helper.\n",
+      "settings.py": "FRONT_CAPACITY = 1\nBACK_CAPACITY = 2\n",
+      "app.py": "import settings\n\nMODE = {\"review\": \"history\", \"record\": \"macro\"}\n\ndef append_action(session, existing, new):\n    limits = {\"macro\": settings.BACK_CAPACITY, \"history\": settings.FRONT_CAPACITY}\n    combined = existing + [new]\n    return combined[-limits[MODE[session]]:]\n"
+    },
+    "probes": {
+      "target": {
+        "function": "append_action",
+        "args": [
+          "review",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ],
+        "expected": [
+          "b",
+          "c",
+          "d",
+          "e"
+        ]
+      },
+      "guard": {
+        "function": "append_action",
+        "args": [
+          "record",
+          [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "e"
+        ]
+      }
+    },
+    "base_id": "trace-buffer-b",
+    "panel": "archived_then_current"
+  }
+]
